@@ -8,9 +8,9 @@ public class Grid {
 
     public Grid(){
         cells = new ArrayList<>();
-        for (int i = 0; i < columns.length; i++){
-            for (int j = 0; j < rows.length; j++){
-                cells.add(columns[i]+rows[j]);
+        for (int i = 0; i < rows.length; i++){
+            for (int j = 0; j < columns.length; j++){
+                cells.add(columns[j]+rows[i]);
             }
         }
     }
@@ -20,10 +20,13 @@ public class Grid {
             switch (ship.getType()){
                 case BATTLESHIP:
                     cells.set(cells.indexOf(shipCell), "BAT");
+                    break;
                 case CRUISER:
                     cells.set(cells.indexOf(shipCell), "CRU");
+                    break;
                 case DISTROYER:
                     cells.set(cells.indexOf(shipCell), "DIS");
+                    break;
                 default:
                     cells.set(cells.indexOf(shipCell), "SUB");
             }
@@ -97,6 +100,15 @@ public class Grid {
         g.markHit(62);
         g.markMiss(70);
         g.markHit(99);
+
+        Ship s = new Ship(new String[]{"A1", "B1", "C1", "D1"});
+        System.out.println(s.toString());
+        g.markShip(s);
+
+        System.out.println(g.cells.toString());
+        System.out.println(g.cells.get(99));
+        System.out.println(g.cells.size());
+        System.out.println(g.cells.indexOf("B1"));
 
         g.plot();
     }
