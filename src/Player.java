@@ -4,6 +4,8 @@ public class Player {
 
     private String name="";
     private boolean myTurn = false;
+    private int hitCounter;
+    private int missCounter;
     Grid grid;
 
     public Player(){
@@ -24,6 +26,22 @@ public class Player {
     }
     public void makeMyTurn(){
         this.myTurn = true;
+    }
+
+    public int getHitCounter() {
+        return hitCounter;
+    }
+
+    public void setHitCounter(int hitCounter) {
+        this.hitCounter = hitCounter;
+    }
+
+    public int getMissCounter() {
+        return missCounter;
+    }
+
+    public void setMissCounter(int missCounter) {
+        this.missCounter = missCounter;
     }
 
     public static void main(String[] args) {

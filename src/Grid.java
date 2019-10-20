@@ -101,9 +101,13 @@ public class Grid {
         g.markMiss(70);
         g.markHit(99);
 
-        Ship s = new Ship(new String[]{"A1", "B1", "C1", "D1"});
-        System.out.println(s.toString());
-        g.markShip(s);
+        Ship s1 = new Ship(new String[]{"A1", "B1", "C1", "D1"});
+        System.out.println(s1.toString());
+        g.markShip(s1);
+
+        Ship s2 = new Ship(new String[]{"H8", "H9", "H10"});
+        System.out.println(s2.toString());
+        g.markShip(s2);
 
         System.out.println(g.cells.toString());
         System.out.println(g.cells.get(99));
