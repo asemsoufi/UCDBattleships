@@ -49,16 +49,20 @@ public class Game {
         }
     }
 
+    public void play(){
+        // implement here
+    }
+
     public static void main(String[] args) {
 
         System.out.println("Game is on..");
-        Game thisGame = new Game();
+        /*Game thisGame = new Game();
         System.out.println("First player is: "+thisGame.player1.getName());
         System.out.println("Second player is: "+thisGame.player2.getName());
         System.out.println("Active player is: "+thisGame.activePlayer.getName());
-        System.out.println(thisGame.availableCells);
-
-        Ship ship = new Cruiser(new String[]{"A1", "B1", "C1"});
+        System.out.println(thisGame.availableCells);*/
+        String[] s = {"A1", "B1", "C1"};
+        Ship ship = new Cruiser(s);
         System.out.println(ship.toString());
 
 
