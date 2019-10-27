@@ -17,18 +17,14 @@ public class Grid {
 
     public void markShip(Ship ship){
         for(String shipCell:ship.getBody()){
-            switch (ship.getType()){
-                case BATTLESHIP:
-                    cells.set(cells.indexOf(shipCell), "BAT");
-                    break;
-                case CRUISER:
-                    cells.set(cells.indexOf(shipCell), "CRU");
-                    break;
-                case DISTROYER:
-                    cells.set(cells.indexOf(shipCell), "DIS");
-                    break;
-                default:
-                    cells.set(cells.indexOf(shipCell), "SUB");
+            if (ship instanceof Battleship) {
+                cells.set(cells.indexOf(shipCell), "BAT");
+            } else if (ship instanceof Cruiser) {
+                cells.set(cells.indexOf(shipCell), "CRU");
+            } else if (ship instanceof Distroyer) {
+                cells.set(cells.indexOf(shipCell), "DIS");
+            } else if (ship instanceof Submarine) {
+                cells.set(cells.indexOf(shipCell), "SUB");
             }
         }
     }
@@ -101,11 +97,11 @@ public class Grid {
         g.markMiss(70);
         g.markHit(99);
 
-        Ship s1 = new Ship(new String[]{"A1", "B1", "C1", "D1"});
+        Ship s1 = new Battleship(new String[]{"A1", "B1", "C1", "D1"});
         System.out.println(s1.toString());
         g.markShip(s1);
 
-        Ship s2 = new Ship(new String[]{"H8", "H9", "H10"});
+        Ship s2 = new Cruiser(new String[]{"H8", "H9", "H10"});
         System.out.println(s2.toString());
         g.markShip(s2);
 

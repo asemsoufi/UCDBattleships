@@ -8,8 +8,6 @@ public class Play {
         thisGame = new Game();
     }
 
-    public void switchPlayer(){
-        // implement here...
-    }
+
 
 }

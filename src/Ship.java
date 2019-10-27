@@ -1,49 +1,46 @@
 public class Ship {
 
-    enum Type {BATTLESHIP, CRUISER, DISTROYER, SUBMARINE}
-    private Type t;
+    private int lives;
     private String[] body;
-    private boolean distroyed = false;
+
 
     public Ship(String[] body){
-        this.body = body;
-        switch (body.length){
-            case 4:
-                this.t = Type.BATTLESHIP;
-                break;
-            case 3:
-                this.t = Type.CRUISER;
-                break;
-            case 2:
-                this.t = Type.DISTROYER;
-                break;
-            default:
-                this.t = Type.SUBMARINE;
+        if(body.length<1 || body.length>4){
+            throw new IllegalArgumentException("Number of cells can only be between 1-4!");
         }
+        this.body = body;
+        this.lives = body.length;
     }
 
     public String[] getBody(){
         return body;
     }
 
-    public Type getType(){
-        return t;
+    public int getLength() {
+        return getBody().length;
+    }
+
+    public int getLives() {
+        return lives;
+    }
+
+    public void reduceLives(){
+        if(lives != 0){
+            lives-=1;
+        }
     }
 
     public String toString(){
         String bodyString = "[";
-        for(int i = 0; i<body.length; i++){
-            bodyString+= i!=(body.length-1)? (body[i]+", ") : (body[i]+"]");
+        for(int i = 0; i<getLength(); i++){
+            bodyString+= i!=(getLength()-1)? (getBody()[i]+", ") : (getBody()[i]+"]");
         }
-        return ("I'm a " + t +", and I'm located at " + bodyString);
+        return (bodyString);
     }
 
-    public void markDistroyed(){
-        this.distroyed = true;
+    public boolean isDistroyed(){
+        return getLives()==0;
     }
 
-    public static void main(String[] args) {
-        Ship ship = new Ship(new String[]{"A1", "B1", "C1"});
-        System.out.println(ship.toString());
-    }
+
 }

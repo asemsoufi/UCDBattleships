@@ -5,21 +5,25 @@ public class Game {
 
     private Player player1;
     private Player player2;
+    private Player activePlayer;
     private Grid mainGrid;
     private ArrayList<String> availableCells;
     private Ship battleship, cruiser, distroyer, submarien;
     private Ship[] ships;
 
     public Game(){
+        System.out.println("Getting first player's name.");
         player1 = new Player();
+        System.out.println("Getting secondAseAs player's name.");
         player2 = new Player();
+
+        activePlayer = player1;
 
         mainGrid = new Grid();
         ships = new Ship[4];
 
         availableCells = new ArrayList<>();
-        for(String s : mainGrid.getCells())
-            availableCells.add(s);
+        availableCells.addAll(mainGrid.getCells());
 
         //randomly generate and add ships to the grid
         for (int i = 0; i < ships.length; i++) {
@@ -37,9 +41,26 @@ public class Game {
 
     }
 
+    public void switchPlayer(){
+        if(activePlayer == player1){
+            activePlayer = player2;
+        } else {
+            activePlayer = player2;
+        }
+    }
+
     public static void main(String[] args) {
 
         System.out.println("Game is on..");
+        Game thisGame = new Game();
+        System.out.println("First player is: "+thisGame.player1.getName());
+        System.out.println("Second player is: "+thisGame.player2.getName());
+        System.out.println("Active player is: "+thisGame.activePlayer.getName());
+        System.out.println(thisGame.availableCells);
+
+        Ship ship = new Cruiser(new String[]{"A1", "B1", "C1"});
+        System.out.println(ship.toString());
+
 
     }
 
