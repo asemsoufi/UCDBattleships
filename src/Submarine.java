@@ -1,15 +1,17 @@
+import java.util.ArrayList;
+
 public class Submarine extends Ship {
 
     private int lives;
-    private String[] body;
+    private ArrayList<String> body;
     private final String type = "Submarine";
     private final int size = 1;
 
 
-    public Submarine(String[] body){
+    public Submarine(ArrayList<String> body){
         super(body);
-        if(body.length!=size){
-            throw new IllegalArgumentException("A Submarine can only be assigned 3 cells!");
+        if(body.size()!=size){
+            throw new IllegalArgumentException("A Submarine can only be assigned 1 cell!");
         }
     }
 

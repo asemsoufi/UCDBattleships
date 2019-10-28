@@ -1,15 +1,17 @@
+import java.util.ArrayList;
+
 public class Battleship extends Ship {
 
     private int lives;
-    private String[] body;
+    private ArrayList<String> body;
     private final String type = "Battleship";
     private final int size = 4;
 
 
-    public Battleship(String[] body){
+    public Battleship(ArrayList<String> body){
         super(body);
-        if(body.length!=size){
-            throw new IllegalArgumentException("A Battleship can only be assigned 3 cells!");
+        if(body.size()!=size){
+            throw new IllegalArgumentException("A Battleship can only be assigned 4 cells!");
         }
     }
 

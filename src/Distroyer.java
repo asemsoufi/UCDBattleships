@@ -1,15 +1,17 @@
+import java.util.ArrayList;
+
 public class Distroyer extends Ship {
 
     private int lives;
-    private String[] body;
+    private ArrayList<String> body;
     private final String type = "Distroyer";
     private final int size = 2;
 
 
-    public Distroyer(String[] body){
+    public Distroyer(ArrayList<String> body){
         super(body);
-        if(body.length!=size){
-            throw new IllegalArgumentException("A Distroyer can only be assigned 3 cells!");
+        if(body.size()!=size){
+            throw new IllegalArgumentException("A Distroyer can only be assigned 2 cells!");
         }
     }
 

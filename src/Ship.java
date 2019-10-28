@@ -1,23 +1,25 @@
+import java.util.ArrayList;
+
 public class Ship {
 
     private int lives;
-    private String[] body;
+    private ArrayList<String> body;
 
 
-    public Ship(String[] body){
-        if(body.length<1 || body.length>4){
+    public Ship(ArrayList<String> body){
+        if(body.size()<1 || body.size()>4){
             throw new IllegalArgumentException("Number of cells can only be between 1-4!");
         }
         this.body = body;
-        this.lives = body.length;
+        this.lives = body.size();
     }
 
-    public String[] getBody(){
+    public ArrayList<String> getBody(){
         return body;
     }
 
     public int getLength() {
-        return getBody().length;
+        return getBody().size();
     }
 
     public int getLives() {
@@ -33,7 +35,7 @@ public class Ship {
     public String toString(){
         String bodyString = "[";
         for(int i = 0; i<getLength(); i++){
-            bodyString+= i!=(getLength()-1)? (getBody()[i]+", ") : (getBody()[i]+"]");
+            bodyString+= i!=(getLength()-1)? (getBody().get(i)+", ") : (getBody().get(i)+"]");
         }
         return (bodyString);
     }

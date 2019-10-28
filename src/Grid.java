@@ -2,8 +2,8 @@ import java.util.ArrayList;
 
 public class Grid {
 
-    private String[] columns = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
-    private String[] rows = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+    private final String[] columns = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
+    private final String[] rows = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
     private ArrayList<String> cells;
 
     public Grid(){
@@ -87,6 +87,14 @@ public class Grid {
 
     }
 
+    public String[] getColumns() {
+        return columns;
+    }
+
+    public String[] getRows() {
+        return rows;
+    }
+
     public static void main(String[] args) {
         Grid g = new Grid();
         g.markHit(10);
@@ -97,11 +105,11 @@ public class Grid {
         g.markMiss(70);
         g.markHit(99);
 
-        Ship s1 = new Battleship(new String[]{"A1", "B1", "C1", "D1"});
+        /*Ship s1; //= new Battleship(new String[]{"A1", "B1", "C1", "D1"});
         System.out.println(s1.toString());
         g.markShip(s1);
 
-        Ship s2 = new Cruiser(new String[]{"H8", "H9", "H10"});
+        Ship s2; //= new Cruiser(new String[]{"H8", "H9", "H10"});
         System.out.println(s2.toString());
         g.markShip(s2);
 
@@ -110,7 +118,7 @@ public class Grid {
         System.out.println(g.cells.size());
         System.out.println(g.cells.indexOf("B1"));
 
-        g.plot();
+        g.plot();*/
     }
 
 }
