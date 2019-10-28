@@ -87,9 +87,9 @@ public class Game {
             System.out.println("I picked column "+columnLetter);
             // pick a random row (1-10), but considering length of ship(i.e. number of cells needed vertically)
             int rowNumber = (int) (Math.random() * (10 - numberOfCells)) + 1;
-            for(int i = rowNumber; i< (rowNumber + numberOfCells); i++){
-                tempVerArray.add(columnLetter + rowNumber);
-                System.out.println("Adding cell "+(columnLetter + rowNumber)+" vertically to the grid.");
+            for(int i = rowNumber; i< rowNumber + numberOfCells; i++){
+                tempVerArray.add(columnLetter + i);
+                System.out.println("Adding cell "+(columnLetter + i)+" vertically to the grid.");
             }
             if (availableCells.containsAll(tempVerArray) && tempVerArray.size()==numberOfCells){
                 success = true;
@@ -145,17 +145,17 @@ public class Game {
         Ship ship4 = new Distroyer(thisGame.getCellsVertical(2));
         System.out.println(ship4.toString());
 
-        //Ship ship5 = new Distroyer(thisGame.getCellsHorizontal(2));
-        //System.out.println(ship5.toString());
+        Ship ship5 = new Distroyer(thisGame.getCellsHorizontal(2));
+        System.out.println(ship5.toString());
 
-        //Ship ship3 = new Distroyer(thisGame.getCellsHorizontal(2));
-        //System.out.println(ship3.toString());
+        Ship ship3 = new Distroyer(thisGame.getCellsHorizontal(2));
+        System.out.println(ship3.toString());
 
-        //Ship ship6 = new Battleship(thisGame.getCellsVertical(4));
-        //System.out.println(ship6.toString());
+        Ship ship6 = new Battleship(thisGame.getCellsVertical(4));
+        System.out.println(ship6.toString());
 
-        //Ship ship7 = new Cruiser(thisGame.getCellsVertical(3));
-        //System.out.println(ship7.toString());
+        Ship ship7 = new Cruiser(thisGame.getCellsVertical(3));
+        System.out.println(ship7.toString());
 
         System.out.println("Remaining cells:");
         System.out.println(thisGame.availableCells.size());
@@ -169,11 +169,11 @@ public class Game {
         thisGame.mainGrid.markShip(ship);
         thisGame.mainGrid.markShip(ship1);
         thisGame.mainGrid.markShip(bat);
-        //thisGame.mainGrid.markShip(ship3);
+        thisGame.mainGrid.markShip(ship3);
         thisGame.mainGrid.markShip(ship4);
-        //thisGame.mainGrid.markShip(ship5);
-       // thisGame.mainGrid.markShip(ship6);
-        //thisGame.mainGrid.markShip(ship7);
+        thisGame.mainGrid.markShip(ship5);
+        thisGame.mainGrid.markShip(ship6);
+        thisGame.mainGrid.markShip(ship7);
 
         thisGame.mainGrid.plot();
 
