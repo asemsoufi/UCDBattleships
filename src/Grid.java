@@ -5,6 +5,11 @@ public class Grid {
     private final String[] columns = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
     private final String[] rows = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
     private ArrayList<String> cells;
+    private ArrayList<String> availableCells;
+    private ArrayList<String> targetCells;
+    private final String[][] noOfShips = {{"Battleship","2"},{"Cruiser","3"},
+            {"Distroyer","4"},{"Submarine","5"}};
+    private ArrayList<Ship> ships;
 
     public Grid(){
         cells = new ArrayList<>();
@@ -12,6 +17,143 @@ public class Grid {
             for (int j = 0; j < columns.length; j++){
                 cells.add(columns[j]+rows[i]);
             }
+        }
+        availableCells = new ArrayList<>();
+        availableCells.addAll(getCells());
+        targetCells = new ArrayList<>();
+        ships = new ArrayList<>();
+    }
+
+    public void deployShips(){
+        //ArrayList<String> tempList = new ArrayList<>();
+        //randomly generate and add ships to the grid
+        for (String[] aShip : noOfShips) {
+            switch(aShip[0].toUpperCase()){
+                case "BATTLESHIP":
+                    for(int i = 1; i<=Integer.parseInt(aShip[1]); i++){
+                        double rand = Math.random();
+                        if(rand >0.5){
+                            // create and place Battleship horizontally
+                            Ship bat = new Battleship(getCellsHorizontal(4));
+                            ships.add(bat);
+                            //mainGrid.markShip(bat);
+                        } else{
+                            // create and place Battleship vertically
+                            Ship bat = new Battleship(getCellsVertical(4));
+                            ships.add(bat);
+                            //mainGrid.markShip(bat);
+                        }
+                    }
+                    break;
+                case "CRUISER":
+                    for(int i = 1; i<=Integer.parseInt(aShip[1]); i++){
+                        double rand = Math.random();
+                        if(rand >0.5){
+                            // create and place Cruiser horizontally
+                            Ship cru = new Cruiser(getCellsHorizontal(3));
+                            ships.add(cru);
+                            //mainGrid.markShip(cru);
+                        } else{
+                            // create and place Cruiser vertically
+                            Ship cru = new Cruiser(getCellsVertical(3));
+                            ships.add(cru);
+                            //mainGrid.markShip(cru);
+                        }
+                    }
+                    break;
+                case "DISTROYER":
+                    for(int i = 1; i<=Integer.parseInt(aShip[1]); i++){
+                        double rand = Math.random();
+                        if(rand >0.5){
+                            // create and place Distroyer horizontally
+                            Ship dis = new Distroyer(getCellsHorizontal(2));
+                            ships.add(dis);
+                            //mainGrid.markShip(dis);
+                        } else{
+                            // create and place Distroyer vertically
+                            Ship dis = new Distroyer(getCellsVertical(2));
+                            ships.add(dis);
+                            //mainGrid.markShip(dis);
+                        }
+                    }
+                    break;
+                default:
+                    for(int i = 1; i<=Integer.parseInt(aShip[1]); i++){
+                        // create and place Submarine, no orientation applies here
+                        Ship sub = new Submarine(getCellsVertical(1));
+                        ships.add(sub);
+                        //mainGrid.markShip(sub);
+                    }
+            }
+        }
+        // mark ships on the main grid
+        for(Ship ship : ships){
+            markShip(ship);
+        }
+    }
+
+    public ArrayList<String> getCellsHorizontal(int numberOfCells){
+        //System.out.println("method getCellsHorizontal started");
+        checkNumOfCells(numberOfCells);
+        boolean success = false;
+        ArrayList<String> tempHorArray = new ArrayList<>();
+        while(!success) {
+            //System.out.println("trying to get cells horizontally");
+            // pick a random row (1-10)
+            int rowNumber = (int) (Math.random() * (9)) + 1;
+            // pick a random column (A-J), but considering length of ship
+            // (i.e. number of cells needed horizontally)
+            int columnIndex = (int) (Math.random() * (9 - numberOfCells)) + 1;
+            for(int j = columnIndex; j< (columnIndex + numberOfCells); j++){
+                String columnLetter = getColumns()[j];
+                tempHorArray.add(columnLetter + rowNumber);
+            }
+            if (availableCells.containsAll(tempHorArray) && tempHorArray.size()==numberOfCells){
+                success = true;
+                //System.out.println("Success, here are the cells I picked "+tempHorArray.toString());
+            } else {
+                //System.out.println("failed this time, will try again..");
+                tempHorArray.clear();
+            }
+        }
+        availableCells.removeAll(tempHorArray);
+        targetCells.addAll(tempHorArray);
+        return tempHorArray;
+    }
+
+    public ArrayList<String> getCellsVertical(int numberOfCells){
+        //System.out.println("method getCellsVertical started");
+        checkNumOfCells(numberOfCells);
+        boolean success = false;
+        ArrayList<String> tempVerArray = new ArrayList<>();
+        while(!success) {
+            //System.out.println("trying to get cells vertically");
+            // pick a random column (A-J)
+            int columnIndex = (int) (Math.random() * 9);
+            String columnLetter = getColumns()[columnIndex];
+            //System.out.println("I picked column "+columnLetter);
+            // pick a random row (1-10), but considering length of ship(i.e. number of cells needed vertically)
+            int rowNumber = (int) (Math.random() * (10 - numberOfCells)) + 1;
+            for(int i = rowNumber; i< rowNumber + numberOfCells; i++){
+                tempVerArray.add(columnLetter + i);
+                //System.out.println("Adding cell "+(columnLetter + i)+" vertically to the grid.");
+            }
+            if (availableCells.containsAll(tempVerArray) && tempVerArray.size()==numberOfCells){
+                success = true;
+                //System.out.println("Success, here are the cells I picked "+tempVerArray.toString());
+            } else {
+                //System.out.println("failed this time, will try again..");
+                tempVerArray.clear();
+            }
+        }
+        availableCells.removeAll(tempVerArray);
+        targetCells.addAll(tempVerArray);
+        return tempVerArray;
+    }
+
+    private void checkNumOfCells(int numberOfCells) {
+        if(numberOfCells<1 || numberOfCells>4 || availableCells.size()<numberOfCells) {
+            throw new IllegalArgumentException("The grid can't assign this number of cells.");
         }
     }
 
