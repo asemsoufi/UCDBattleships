@@ -1,11 +1,10 @@
-import java.util.ArrayList;
 
 public class Game {
 
     private Player player1;
     private Player player2;
     private Player activePlayer;
-    private Grid mainGrid;
+    private Grid grid;
 
 
     public Game(){
@@ -16,9 +15,9 @@ public class Game {
 
         activePlayer = player1;
 
-        mainGrid = new Grid();
+        grid = new Grid();
 
-        mainGrid.deployShips();
+        grid.deployShips();
     }
 
     public void switchPlayer(){
@@ -29,20 +28,11 @@ public class Game {
         }
     }
 
+    public void getGrid(){
+        grid.plot();
+    }
+
     public void play(){
         // implement here
     }
-
-    public static void main(String[] args) {
-
-        System.out.println("Game is on..");
-        Game thisGame = new Game();
-        //System.out.println("First player is: "+thisGame.player1.getName());
-        //System.out.println("Second player is: "+thisGame.player2.getName());
-       //System.out.println("Active player is: "+thisGame.activePlayer.getName());
-
-        thisGame.mainGrid.plot();
-
-    }
-
 }
