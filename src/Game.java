@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.sql.SQLOutput;
 
 
 public class Game {
@@ -9,7 +10,7 @@ public class Game {
     private Player winner;
     private Grid lookupGrid;
     private Grid deployedGrid;
-    private boolean gameOver = false;
+    private boolean gameOver;
 
 
     public Game(){
@@ -37,15 +38,21 @@ public class Game {
         // give each player his own copy of target cells
         player1.setTargetCells(deployedGrid.getTargetCells());
         player2.setTargetCells(deployedGrid.getTargetCells());
+
+        gameOver = false;
     }
 
-    public void switchPlayer(){
-        activePlayer = (activePlayer==player1? player2:player1);
+    private void switchPlayer(){
+        if (activePlayer==player1 && player2.isStillIn()){
+            activePlayer = player2;
+        }
+        else if(activePlayer==player2 && player1.isStillIn()) {
+            activePlayer = player1;
+        }
         System.out.println();
-        //clearConsole();
     }
 
-    public boolean isAHit(String playerGuess){
+    private boolean isAHit(String playerGuess){
         return (activePlayer.getMyTargetCells().contains(playerGuess));
     }
 
@@ -53,56 +60,78 @@ public class Game {
         deployedGrid.plot();
     }
 
+    public void printStats(Player p){
+        System.out.println("You made "+activePlayer.shots()+(activePlayer.shots()!=1? " shots.":" shot."));
+        if(p.shots()!=0){
+            System.out.println("Your aiming accuracy was "+
+                    (float)p.getHitCounter()/((float)p.getHitCounter()+
+                            (float)p.getMissCounter()) * 100 + "%");
+        }
+        System.out.println();
+    }
+
     public void play(){
         // implement here
         while (!gameOver && (player1.isStillIn() || player2.isStillIn())) {
-            System.out.println("Ok "+activePlayer.getName()+", it's your turn. Good luck :)");
+            System.out.println("Ok "+activePlayer.getName()+", make a guess? ");
             activePlayer.getGrid().plot();
             System.out.println();
             String currentInput = activePlayer.makeGuess();
-            //System.out.println("Your guess is: "+currentInput);
-            int hitCell = lookupGrid.getCells().indexOf(currentInput);
-            //System.out.println("Your input index is: "+hitCell);
-            /*if (currentInput.equals("quit".toUpperCase())){
-                System.out.println(activePlayer.getName()+", thank you for playing, below is your final scoreboard.");
-                activePlayer.getGrid().plot();
+            System.out.println("You entered: "+currentInput);
+
+            int hitCellIndex;
+
+            if (currentInput.equals("QUIT")){
+                System.out.println(activePlayer.getName()+", thank you for playing, below is your summary:");
+                printStats(activePlayer);
+
                 activePlayer.notStillIn();
                 switchPlayer();
                 continue;
-            }*/
-            while(isAHit(currentInput) && !gameOver){
-                System.out.println("Wow, "+currentInput+" is a hit, well done! Keep playing "+
-                        activePlayer.getName()+"..");
+            } else {
+                hitCellIndex = lookupGrid.getCells().indexOf(currentInput);
+            }
+            if (isAHit(currentInput) && !gameOver){
                 activePlayer.incHitCounter();
-                //System.out.println("You made "+activePlayer.getHitCounter()+" hits so far.");
-                //System.out.println("I will mark your hit at index: "+hitCell);
-                activePlayer.getGrid().markHit(hitCell);
+                activePlayer.getGrid().markHit(hitCellIndex);
                 activePlayer.getGrid().plot();
                 if (activePlayer.getHitCounter() == deployedGrid.getTargetCells().size()){
                     winner = activePlayer;
+                    System.out.println("Congratulations "+activePlayer.getName()+", you made it :)");
                     gameOver=true;
                     break;
+                } else {
+                    activePlayer.getGrid().plot();
+                    System.out.println("Wow, it's a hit, well done! Keep playing ");
                 }
-                currentInput = activePlayer.makeGuess();
-                hitCell = lookupGrid.getCells().indexOf(currentInput);
+
+            } else {
+                System.out.println("Sorry "+activePlayer.getName()+", you missed!");
+                activePlayer.incMissCounter();
+                activePlayer.getGrid().markMiss(hitCellIndex);
+                switchPlayer();
             }
-            System.out.println("Sorry "+activePlayer.getName()+", you missed!");
-            activePlayer.incMissCounter();
-            activePlayer.getGrid().markMiss(hitCell);
-            switchPlayer();
         }
-        //gameOver=true;
+
+        System.out.println("Game Over!");
+        if(winner!=null){
+            System.out.println("And The winner is "+winner.getName());
+            System.out.println("Below is your game summary:");
+            printStats(winner);
+        } else {
+            System.out.println("There is no winner! Both players quit the game early :(");
+        }
+
+        System.out.println("Below is the original battle field map, have a look ;)");
+        deployedGrid.plot();
     }
 
-    /*public void clearConsole()
-    {
-        try
-        {
-            Runtime.getRuntime().exec("cls");
-        }
-        catch (final Exception e)
-        {
-            //  Handle any exceptions.
-        }
-    }*/
+    public static void main(String[] args) {
+        //Game thisGame = new Game();
+
+        System.out.println("Game is on..");
+        Game game = new Game();
+        game.play();
+    }
+
 }

@@ -4,9 +4,9 @@ import java.util.Scanner;
 public class Player {
 
     private String name="";
-    private boolean stillIn = true;  // this wil be false should the player decide to quit the game before it ends
-    private int hitCounter=0;
-    private int missCounter=0;
+    private boolean stillIn;  // this wil be false should the player decide to quit the game before it ends
+    private int hitCounter;
+    private int missCounter;
     private Grid grid;
     private ArrayList<String> myTargetCells;
 
@@ -16,6 +16,9 @@ public class Player {
             System.out.print("Enter a name: ");
             this.name = input.nextLine().toUpperCase();
         }
+        stillIn = true;
+        hitCounter = 0;
+        missCounter = 0;
         grid = new Grid();
         myTargetCells = new ArrayList<>();
     }
@@ -26,7 +29,7 @@ public class Player {
 
     public String makeGuess(){
         String userGuess = "";
-        while(!(grid.getCells().contains(userGuess.toUpperCase())) && !userGuess.equals("quit")) {
+        while(!(grid.getCells().contains(userGuess.toUpperCase())) && !userGuess.equals("QUIT")) {
             Scanner input = new Scanner(System.in);
             System.out.print("Make a guess? ");
             userGuess = input.nextLine().toUpperCase();
@@ -59,7 +62,7 @@ public class Player {
     }
 
     public void incHitCounter() {
-        this.hitCounter +=1;
+        hitCounter++;
     }
 
     public int getMissCounter() {
@@ -67,7 +70,11 @@ public class Player {
     }
 
     public void incMissCounter() {
-        this.missCounter += 1;
+        missCounter++;
+    }
+
+    public int shots(){
+        return hitCounter+missCounter;
     }
 
     public static void main(String[] args) {
