@@ -116,7 +116,9 @@ public class Grid {
                 tempHorArray.clear();
             }
         }
+        // remove cells assigned to the new ship, so that it can't be accidentally re-assigned to another ship
         availableCells.removeAll(tempHorArray);
+        // a new ship was added successfully to the grid and needs to be marked as possible target
         targetCells.addAll(tempHorArray);
         return tempHorArray;
     }
@@ -143,10 +145,13 @@ public class Grid {
                 //System.out.println("Success, here are the cells I picked "+tempVerArray.toString());
             } else {
                 //System.out.println("failed this time, will try again..");
+                //clear previous selection and start over again
                 tempVerArray.clear();
             }
         }
+        // remove cells assigned to the new ship, so that it can't be accidentally re-assigned to another ship
         availableCells.removeAll(tempVerArray);
+        // a new ship was added successfully to the grid and needs to be marked as possible target
         targetCells.addAll(tempVerArray);
         return tempVerArray;
     }

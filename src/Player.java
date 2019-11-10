@@ -4,14 +4,14 @@ import java.util.Scanner;
 public class Player {
 
     private String name="";
-    private boolean stillIn = true;  // this will be used to continue playing if a hit is made, or switch turns
+    private boolean stillIn = true;  // this wil be false should the player decide to quit the game before it ends
     private int hitCounter=0;
     private int missCounter=0;
     private Grid grid;
     private ArrayList<String> myTargetCells;
 
     public Player(){
-        while(this.name.equals("")) {
+        while(this.name.isEmpty() || this.name.trim().isEmpty()) {
             Scanner input = new Scanner(System.in);
             System.out.print("Enter a name: ");
             this.name = input.nextLine().toUpperCase();
