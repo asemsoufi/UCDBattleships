@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Ship {
+public abstract class Ship {
 
     private int lives;
     private ArrayList<String> body;
@@ -37,7 +37,7 @@ public class Ship {
         for(int i = 0; i<getLength(); i++){
             bodyString+= i!=(getLength()-1)? (getBody().get(i)+", ") : (getBody().get(i)+"]");
         }
-        return (bodyString);
+        return "I'm a "+getClass().getSimpleName()+", and I'm located at "+bodyString;
     }
 
     public boolean isDistroyed(){

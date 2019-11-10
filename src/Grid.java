@@ -8,7 +8,7 @@ public class Grid {
     private ArrayList<String> availableCells;
     private ArrayList<String> targetCells;
     private final String[][] noOfShips = {{"Battleship","2"},{"Cruiser","3"},
-            {"Distroyer","4"},{"Submarine","5"}};
+            {"Destroyer","4"},{"Submarine","5"}};
     private ArrayList<Ship> ships;
 
     public Grid(){
@@ -65,13 +65,13 @@ public class Grid {
                     for(int i = 1; i<=Integer.parseInt(aShip[1]); i++){
                         double rand = Math.random();
                         if(rand >0.5){
-                            // create and place Distroyer horizontally
-                            Ship dis = new Distroyer(getCellsHorizontal(2));
+                            // create and place Destroyer horizontally
+                            Ship dis = new Destroyer(getCellsHorizontal(2));
                             ships.add(dis);
                             //mainGrid.markShip(dis);
                         } else{
-                            // create and place Distroyer vertically
-                            Ship dis = new Distroyer(getCellsVertical(2));
+                            // create and place Destroyer vertically
+                            Ship dis = new Destroyer(getCellsVertical(2));
                             ships.add(dis);
                             //mainGrid.markShip(dis);
                         }
@@ -86,13 +86,13 @@ public class Grid {
                     }
             }
         }
-        // mark ships on the main grid
+        // mark ships on the main grid. This is for testing purposes only, and will be hidden from the player.
         for(Ship ship : ships){
             markShip(ship);
         }
     }
 
-    public ArrayList<String> getCellsHorizontal(int numberOfCells){
+    private ArrayList<String> getCellsHorizontal(int numberOfCells){
         //System.out.println("method getCellsHorizontal started");
         checkNumOfCells(numberOfCells);
         boolean success = false;
@@ -121,7 +121,7 @@ public class Grid {
         return tempHorArray;
     }
 
-    public ArrayList<String> getCellsVertical(int numberOfCells){
+    private ArrayList<String> getCellsVertical(int numberOfCells){
         //System.out.println("method getCellsVertical started");
         checkNumOfCells(numberOfCells);
         boolean success = false;
@@ -157,13 +157,13 @@ public class Grid {
         }
     }
 
-    public void markShip(Ship ship){
+    private void markShip(Ship ship){
         for(String shipCell:ship.getBody()){
             if (ship instanceof Battleship) {
                 cells.set(cells.indexOf(shipCell), "BAT");
             } else if (ship instanceof Cruiser) {
                 cells.set(cells.indexOf(shipCell), "CRU");
-            } else if (ship instanceof Distroyer) {
+            } else if (ship instanceof Destroyer) {
                 cells.set(cells.indexOf(shipCell), "DIS");
             } else if (ship instanceof Submarine) {
                 cells.set(cells.indexOf(shipCell), "SUB");
@@ -171,20 +171,24 @@ public class Grid {
         }
     }
 
-    public void markHit(int cellNr){
-        if(cellNr>=0 && cellNr <= 99) {
+    void markHit(int cellNr){
+        if(cellNr>=0 && cellNr < cells.size()) {
             cells.set(cellNr, "HIT");
         }
     }
 
-    public void markMiss(int cellNr){
-        if(cellNr>=0 && cellNr <= 99) {
+    void markMiss(int cellNr){
+        if(cellNr>=0 && cellNr < cells.size()) {
             cells.set(cellNr, "X");
         }
     }
 
     public ArrayList<String> getCells() {
         return cells;
+    }
+
+    public ArrayList<String> getTargetCells() {
+        return targetCells;
     }
 
     public void plot(){
@@ -239,7 +243,8 @@ public class Grid {
 
     public static void main(String[] args) {
         Grid g = new Grid();
-        g.markHit(10);
+        System.out.println(g.getCells().toString());
+        /*g.markHit(10);
         g.markHit(16);
         g.markMiss(40);
         g.markHit(55);

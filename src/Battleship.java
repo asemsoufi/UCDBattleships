@@ -2,9 +2,7 @@ import java.util.ArrayList;
 
 public class Battleship extends Ship {
 
-    private int lives;
-    private ArrayList<String> body;
-    private final String type = "Battleship";
+
     private final int size = 4;
 
 
@@ -16,7 +14,7 @@ public class Battleship extends Ship {
     }
 
     public String toString(){
-        return ("I'm a Battleship, and I'm located at "+super.toString());
+        return (super.toString());
     }
 
 }
