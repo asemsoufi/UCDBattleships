@@ -122,16 +122,16 @@ public class Game {
             System.out.println("There is no winner! Both players quit the game early :(");
         }
 
-        System.out.println("Below is the original battle field map, have a look ;)");
+        System.out.println("Below is the original battleships distribution map, have a look ;)");
         deployedGrid.plot();
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         //Game thisGame = new Game();
 
         System.out.println("Game is on..");
         Game game = new Game();
         game.play();
-    }
+    }*/
 
 }
