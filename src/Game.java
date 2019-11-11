@@ -77,7 +77,7 @@ public class Game {
             activePlayer.getGrid().plot();
             System.out.println();
             String currentInput = activePlayer.makeGuess();
-            System.out.println("You entered: "+currentInput);
+            //System.out.println("You entered: "+currentInput);
 
             int hitCellIndex;
 
