@@ -63,7 +63,7 @@ public class Game {
     public void printStats(Player p){
         System.out.println("You made "+activePlayer.shots()+(activePlayer.shots()!=1? " shots.":" shot."));
         if(p.shots()!=0){
-            System.out.println("Your aiming accuracy was "+ p.getHitCounter()/p.shots() * 100 + "%");
+            System.out.println("Your aiming accuracy was "+ (int)((float)p.getHitCounter()/(float)p.shots() * 100) + "%");
         }
         System.out.println();
     }
