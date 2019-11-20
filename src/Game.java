@@ -13,12 +13,12 @@ public class Game {
     private boolean gameOver;
 
 
-    public Game(){
+    public Game(String p1Name, String p2Name){
 
-        System.out.println("Getting first player's name.");
-        player1 = new Player();
-        System.out.println("Getting second player's name.");
-        player2 = new Player();
+        //System.out.println("Getting first player's name.");
+        player1 = new Player(p1Name);
+        //System.out.println("Getting second player's name.");
+        player2 = new Player(p2Name);
 
         activePlayer = player1;
 

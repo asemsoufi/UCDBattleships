@@ -263,10 +263,10 @@ public class Grid {
 
         Ship s2; //= new Cruiser(new String[]{"H8", "H9", "H10"});
         System.out.println(s2.toString());
-        g.markShip(s2);
+        g.markShip(s2);*/
 
-        System.out.println(g.cells.toString());
-        System.out.println(g.cells.get(99));
+        //System.out.println(g.cells.toString());
+        /*System.out.println(g.cells.get(99));
         System.out.println(g.cells.size());
         System.out.println(g.cells.indexOf("B1"));
 
