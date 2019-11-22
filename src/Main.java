@@ -39,18 +39,19 @@ public class Main extends Application {
                     // update button text based on the outcome of player's shot
                     if(newGame.itIsAHit()){
                         b.setText("HIT");
-                        b.setFont(Font.font("Arial", FontWeight.BOLD,20));
+                        b.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD,20));
                         b.setDisable(true);
                     } else{
                         b.setText(" X ");
-                        b.setFont(Font.font("Arial", FontWeight.BOLD,20));
+                        b.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD,24));
                         b.setDisable(true);
                     }
                     // end game if that was the last hit
                     if(newGame.isGameOver()){
-                        s.setScene(gameOverScene);
-                        gameOverStatsLabel.setText(newGame.getInfoMessage());
-                        s.centerOnScreen();
+                        g.setDisable(true);
+                        //s.setScene(gameOverScene);
+                        //gameOverStatsLabel.setText(newGame.getInfoMessage());
+                        //s.centerOnScreen();
                     } else {
 
                         // show appropriate player's scene
@@ -200,23 +201,33 @@ public class Main extends Application {
         });
 
         btP1QuitGame.setOnAction((ActionEvent event) ->{
-            newGame.setActivePlayer(newGame.getPlayer1());
-            newGame.play("QUIT");
-            if(newGame.getPlayer2().isStillIn()){
-                primaryStage.setScene(p2Scene);
-            } else {
+            if(newGame.isGameOver()){
                 primaryStage.setScene(gameOverScene);
+                gameOverStatsLabel.setText(newGame.getInfoMessage());
+            } else {
+                newGame.setActivePlayer(newGame.getPlayer1());
+                newGame.play("QUIT");
+                if (newGame.getPlayer2().isStillIn()) {
+                    primaryStage.setScene(p2Scene);
+                } else {
+                    primaryStage.setScene(gameOverScene);
+                }
             }
             primaryStage.centerOnScreen();
         });
 
         btP2QuitGame.setOnAction((ActionEvent event) ->{
-            newGame.setActivePlayer(newGame.getPlayer2());
-            newGame.play("QUIT");
-            if(newGame.getPlayer1().isStillIn()){
-                primaryStage.setScene(p1Scene);
-            } else {
+            if(newGame.isGameOver()){
                 primaryStage.setScene(gameOverScene);
+                gameOverStatsLabel.setText(newGame.getInfoMessage());
+            } else {
+                newGame.setActivePlayer(newGame.getPlayer2());
+                newGame.play("QUIT");
+                if (newGame.getPlayer1().isStillIn()) {
+                    primaryStage.setScene(p1Scene);
+                } else {
+                    primaryStage.setScene(gameOverScene);
+                }
             }
             primaryStage.centerOnScreen();
         });
@@ -227,18 +238,18 @@ public class Main extends Application {
         gameOverStatsLabel = new Label();
         gameOverStatsLabel.setFont(Font.font("Arial", FontWeight.NORMAL,20));
 
-        Button gameOverBackBT = new Button("Back to Main");
+        /*Button gameOverBackBT = new Button("Back to Main");
         gameOverBackBT.setOnAction((ActionEvent event) ->{
             newGame = new Game();
             primaryStage.setScene(welcomeScene);
             primaryStage.centerOnScreen();
-        });
+        });*/
 
         Button gameOverExitBT = new Button("Exit Game");
         gameOverExitBT.setOnAction((ActionEvent event) ->{
             primaryStage.close();
         });
-        VBox gameOverVRoot = new VBox(20,gameOverLabel,gameOverStatsLabel,gameOverBackBT, gameOverExitBT);
+        VBox gameOverVRoot = new VBox(20,gameOverLabel,gameOverStatsLabel, gameOverExitBT);
         gameOverVRoot.setAlignment(Pos.CENTER);
         gameOverScene = new Scene( gameOverVRoot , 400 , 500);
 
