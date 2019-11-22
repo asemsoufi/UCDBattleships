@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    private Game newGame = new Game();
+    private Game newGame;
     private Scene welcomeScene;
     private Scene inputScene;
     private Scene p1Scene;
@@ -39,9 +39,11 @@ public class Main extends Application {
                     // update button text based on the outcome of player's shot
                     if(newGame.itIsAHit()){
                         b.setText("HIT");
+                        b.setFont(Font.font("Arial", FontWeight.BOLD,20));
                         b.setDisable(true);
                     } else{
                         b.setText(" X ");
+                        b.setFont(Font.font("Arial", FontWeight.BOLD,20));
                         b.setDisable(true);
                     }
                     // end game if that was the last hit
@@ -50,6 +52,7 @@ public class Main extends Application {
                         gameOverStatsLabel.setText(newGame.getInfoMessage());
                         s.centerOnScreen();
                     } else {
+
                         // show appropriate player's scene
                         if (newGame.getActivePlayer() == newGame.getPlayer1()) {
                             s.setScene(p1Scene);
@@ -69,6 +72,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        newGame = new Game();
 
         // constructing primary stage
         Image welcomeImage = new Image("https://bit.ly/2CXAWUs");
@@ -115,7 +120,9 @@ public class Main extends Application {
         Button btStartGame = new Button ( "Play" ) ;
         Button btCancel = new Button ( "Cancel" ) ;
 
-        VBox inputRoot = new VBox(30 , inputGrid, btStartGame , btCancel);
+        Label inputInfoLabel = new Label();
+
+        VBox inputRoot = new VBox(30 , inputGrid, inputInfoLabel, btStartGame , btCancel);
         inputRoot.setAlignment(Pos.CENTER);
 
         // input scene asks players to enter their names and start playing or go back to main (welcome) window/scene
@@ -144,6 +151,8 @@ public class Main extends Application {
         btNewGame.setOnAction((ActionEvent event) ->{
             primaryStage.setScene(inputScene);
             primaryStage.centerOnScreen();
+            p1NameInput.setText("");
+            p2NameInput.setText("");
         });
 
 
@@ -164,7 +173,11 @@ public class Main extends Application {
         p2VRoot.setAlignment(Pos.CENTER);
 
         btStartGame.setOnAction((ActionEvent event) ->{
-            if (!(p1NameInput.getText().trim().isEmpty() || p2NameInput.getText().trim().isEmpty())) {
+            if (p1NameInput.getText().trim().isEmpty() || p2NameInput.getText().trim().isEmpty() ||
+            p2NameInput.getText().trim().toUpperCase().equals(p1NameInput.getText().trim().toUpperCase())) {
+                inputInfoLabel.setText("Players' names can't be empty or equal!");
+            }
+            else {
                 // create a label to display the name of player
                 newGame.getPlayer1().setName(p1NameInput.getText());
                 newGame.getPlayer2().setName(p2NameInput.getText());
@@ -216,6 +229,7 @@ public class Main extends Application {
 
         Button gameOverBackBT = new Button("Back to Main");
         gameOverBackBT.setOnAction((ActionEvent event) ->{
+            newGame = new Game();
             primaryStage.setScene(welcomeScene);
             primaryStage.centerOnScreen();
         });

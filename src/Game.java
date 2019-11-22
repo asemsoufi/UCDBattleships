@@ -164,7 +164,7 @@ public class Game {
 
         if(gameOver || (!player1.isStillIn() && !player2.isStillIn())) {
             System.out.println("Game Over!");
-            if (winner != null) {
+            if (winner == player1 || winner == player2) {
                 System.out.println("And The winner is " + winner.getName());
                 System.out.println("Below is your game summary:");
                 System.out.println(gameStats(winner));
