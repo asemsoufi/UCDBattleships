@@ -10,8 +10,7 @@ public class Player {
     private Grid grid;
     private ArrayList<String> myTargetCells;
 
-    public Player(String name){
-        this.name = name;
+    public Player(){
         /*while(this.name.isEmpty() || this.name.trim().isEmpty()) {
             Scanner input = new Scanner(System.in);
             System.out.print("Enter a name: ");

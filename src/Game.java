@@ -1,4 +1,4 @@
-import java.io.IOException;
+//import java.io.IOException;
 import java.sql.SQLOutput;
 
 
@@ -11,16 +11,20 @@ public class Game {
     private Grid lookupGrid;
     private Grid deployedGrid;
     private boolean gameOver;
+    private boolean isAHit;
+    private String infoMessage;
 
 
-    public Game(String p1Name, String p2Name){
+    public Game(){
 
         //System.out.println("Getting first player's name.");
-        player1 = new Player(p1Name);
+        player1 = new Player();
         //System.out.println("Getting second player's name.");
-        player2 = new Player(p2Name);
+        player2 = new Player();
 
         activePlayer = player1;
+
+        infoMessage = "Please click a cell from the grid below to make a shot!";
 
         lookupGrid = new Grid();
 
@@ -40,9 +44,11 @@ public class Game {
         player2.setTargetCells(deployedGrid.getTargetCells());
 
         gameOver = false;
+
+        //main = new Main();
     }
 
-    private void switchPlayer(){
+    public void switchPlayer(){
         if (activePlayer==player1 && player2.isStillIn()){
             activePlayer = player2;
         }
@@ -52,84 +58,126 @@ public class Game {
         System.out.println();
     }
 
-    private boolean isAHit(String playerGuess){
-        return (activePlayer.getMyTargetCells().contains(playerGuess));
+    public boolean itIsAHit(){
+        return isAHit;
     }
 
     public void showGrid(){
         deployedGrid.plot();
     }
 
-    public void printStats(Player p){
-        System.out.println("You made "+activePlayer.shots()+(activePlayer.shots()!=1? " shots.":" shot."));
-        if(p.shots()!=0){
-            System.out.println("Your aiming accuracy was "+ (int)((float)p.getHitCounter()/(float)p.shots() * 100) + "%");
-        }
-        System.out.println();
+    public String gameStats(Player p){
+        String s1 = p.getName()+" made "+p.shots()+(p.shots()==0?" shots.\n":" shot\n");
+        String s2 = p.shots()==0? "" : p.getName()+"'s aiming accuracy was "+
+                (int)((float)p.getHitCounter()/(float)p.shots() * 100) + "%";
+        return s1+s2;
     }
 
-    public void play(){
-        // implement here
-        while (!gameOver && (player1.isStillIn() || player2.isStillIn())) {
-            System.out.println("Ok "+activePlayer.getName()+", make a guess? ");
+    public Player getPlayer1() {
+        return player1;
+    }
+
+    public void setPlayer1(Player player1) {
+        this.player1 = player1;
+    }
+
+    public Player getPlayer2() {
+        return player2;
+    }
+
+    public void setPlayer2(Player player2) {
+        this.player2 = player2;
+    }
+
+    public Player getActivePlayer() {
+        return activePlayer;
+    }
+
+    public void setActivePlayer(Player p) {
+        this.activePlayer = p;
+    }
+
+    public Player getWinner() {
+        return winner;
+    }
+
+    public Grid getLookupGrid() {
+        return lookupGrid;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public String getInfoMessage(){
+        return infoMessage;
+    }
+
+    public void play(String currentGuess){
+
+        if (!gameOver && (player1.isStillIn() || player2.isStillIn())) {
+
             activePlayer.getGrid().plot();
             System.out.println();
-            String currentInput = activePlayer.makeGuess();
-            //System.out.println("You entered: "+currentInput);
 
-            int hitCellIndex;
+            if (currentGuess.equals("QUIT")){
 
-            if (currentInput.equals("QUIT")){
-                System.out.println(activePlayer.getName()+", thank you for playing, below is your summary:");
-                printStats(activePlayer);
+                System.out.println(activePlayer.getName()+", thank you for playing. Your stats are:\n"+
+                        gameStats(activePlayer));
+                infoMessage = activePlayer.getName()+", thank you for playing. Your stats are:\n"+
+                gameStats(activePlayer);
 
                 activePlayer.notStillIn();
                 switchPlayer();
-                continue;
-            } else {
-                hitCellIndex = lookupGrid.getCells().indexOf(currentInput);
-            }
-            if (isAHit(currentInput) && !gameOver){
+
+            } else if ((activePlayer.getMyTargetCells().contains(currentGuess)) && !gameOver){
+                isAHit = true;
                 activePlayer.incHitCounter();
-                activePlayer.getGrid().markHit(hitCellIndex);
+                activePlayer.getGrid().markHit(lookupGrid.getCells().indexOf(currentGuess));
                 activePlayer.getGrid().plot();
-                if (activePlayer.getHitCounter() == deployedGrid.getTargetCells().size()){
+                activePlayer.getMyTargetCells().remove(currentGuess);
+                if (activePlayer.getMyTargetCells().size() == 0){
                     winner = activePlayer;
+
                     System.out.println("Congratulations "+activePlayer.getName()+", you made it :)");
+                    infoMessage = "Congratulations "+activePlayer.getName()+", you made it :)\n"+gameStats(winner);
+
                     gameOver=true;
-                    break;
                 } else {
                     activePlayer.getGrid().plot();
-                    System.out.println("Wow, it's a hit, well done! Keep playing ");
+
+                    System.out.println("Wow, it's a hit, well done! Keep playing.");
+                    infoMessage = "Wow, it's a hit, well done! Keep playing.";
                 }
 
             } else {
+                isAHit = false;
                 System.out.println("Sorry "+activePlayer.getName()+", you missed!");
+                infoMessage = "Sorry "+activePlayer.getName()+", you missed!";
+
                 activePlayer.incMissCounter();
-                activePlayer.getGrid().markMiss(hitCellIndex);
+                activePlayer.getGrid().markMiss(lookupGrid.getCells().indexOf(currentGuess));
+                System.out.println();
                 switchPlayer();
             }
         }
 
-        System.out.println("Game Over!");
-        if(winner!=null){
-            System.out.println("And The winner is "+winner.getName());
-            System.out.println("Below is your game summary:");
-            printStats(winner);
-        } else {
-            System.out.println("There is no winner! Both players quit the game early :(");
+        if(gameOver || (!player1.isStillIn() && !player2.isStillIn())) {
+            System.out.println("Game Over!");
+            if (winner != null) {
+                System.out.println("And The winner is " + winner.getName());
+                System.out.println("Below is your game summary:");
+                System.out.println(gameStats(winner));
+                infoMessage = gameStats(winner);
+            } else {
+                System.out.println("There is no winner! Both players quit the game early :(");
+                infoMessage = "There is no winner! Both players quit the game early :(";
+            }
+
+            System.out.println("Below is the original battleships distribution map, have a look ;)");
+            deployedGrid.plot();
         }
 
-        System.out.println("Below is the original battleships distribution map, have a look ;)");
-        deployedGrid.plot();
     }
-
-    /*public static void main(String[] args) {
-        //Game thisGame = new Game();
-
-        System.out.println("Game is on..");
-        Game game = new Game();
-        game.play();
-    }*/
 
 }

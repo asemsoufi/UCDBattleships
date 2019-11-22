@@ -10,13 +10,62 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 
 public class Main extends Application {
 
-    private Grid guiGrid = new Grid();
     private Game newGame = new Game();
+    private Scene welcomeScene;
+    private Scene inputScene;
+    private Scene p1Scene;
+    private Scene p2Scene;
+    private Scene gameOverScene;
+    private Label gameOverStatsLabel;
+
+    private void buildPlayerGrid(GridPane g, Stage s){
+        int index1 = 0;
+        for(int i =0; i<newGame.getLookupGrid().getRows().length; i++){
+            for(int j = 0; j<newGame.getLookupGrid().getColumns().length; j++){
+                Button b = new Button();
+                b.setId(newGame.getLookupGrid().getCells().get(index1));
+                // b.setText(newGame.getLookupGrid().getCells().get(index1));
+                b.setPrefSize(70,70);
+                b.setOnAction((ActionEvent event) ->{
+                    // make a guess
+                    newGame.play(b.getId());
+                    // update button text based on the outcome of player's shot
+                    if(newGame.itIsAHit()){
+                        b.setText("HIT");
+                        b.setDisable(true);
+                    } else{
+                        b.setText(" X ");
+                        b.setDisable(true);
+                    }
+                    // end game if that was the last hit
+                    if(newGame.isGameOver()){
+                        s.setScene(gameOverScene);
+                        gameOverStatsLabel.setText(newGame.getInfoMessage());
+                        s.centerOnScreen();
+                    } else {
+                        // show appropriate player's scene
+                        if (newGame.getActivePlayer() == newGame.getPlayer1()) {
+                            s.setScene(p1Scene);
+                            s.centerOnScreen();
+                        } else {
+                            s.setScene(p2Scene);
+                            s.centerOnScreen();
+                        }
+                    }
+                });
+                g.add(b, j, i);
+
+                index1++;
+            }
+        }
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -59,21 +108,42 @@ public class Main extends Application {
         inputGrid.setAlignment(Pos.CENTER);
 
         // initially setting scene to welcome scene asking the user to start a new game or exit application
-        Scene welcomeScene = new Scene ( WelcomeRoot , 750 , 600) ;
+        welcomeScene = new Scene ( WelcomeRoot , 750 , 600) ;
         primaryStage.setScene(welcomeScene);
+        primaryStage.centerOnScreen();
 
         Button btStartGame = new Button ( "Play" ) ;
-        Button btCancel = new Button ( "Back" ) ;
+        Button btCancel = new Button ( "Cancel" ) ;
 
         VBox inputRoot = new VBox(30 , inputGrid, btStartGame , btCancel);
         inputRoot.setAlignment(Pos.CENTER);
 
         // input scene asks players to enter their names and start playing or go back to main (welcome) window/scene
-        Scene inputScene = new Scene( inputRoot , 400 , 350);
+        inputScene = new Scene( inputRoot , 400 , 350);
 
+        // setting-up a grid of cells for the player1 to play
+        GridPane p1GuiGrid = new GridPane();
+        p1GuiGrid.setPadding(new Insets(10,10,10,10));
+        p1GuiGrid.setVgap(1);
+        p1GuiGrid.setHgap(1);
+
+        buildPlayerGrid(p1GuiGrid, primaryStage);
+
+        Button btP1QuitGame = new Button ( "Quit Game!" ) ;
+
+        // setting-up a grid of cells for the player2 to play
+        GridPane p2GuiGrid = new GridPane();
+        p2GuiGrid.setPadding(new Insets(10,10,10,10));
+        p2GuiGrid.setVgap(1);
+        p2GuiGrid.setHgap(1);
+
+        buildPlayerGrid(p2GuiGrid, primaryStage);
+
+        Button btP2QuitGame = new Button ( "Quit Game!" ) ;
 
         btNewGame.setOnAction((ActionEvent event) ->{
             primaryStage.setScene(inputScene);
+            primaryStage.centerOnScreen();
         });
 
 
@@ -81,42 +151,84 @@ public class Main extends Application {
             primaryStage.close();
         });
 
+        Label p1SceneNameLabel = new Label();
+        Label p2SceneNameLabel = new Label();
+
+
+        VBox p1VRoot = new VBox(20, p1SceneNameLabel, p1GuiGrid, btP1QuitGame);
+        p1Scene = new Scene( p1VRoot , 700 , 870);
+        p1VRoot.setAlignment(Pos.CENTER);
+
+        VBox p2VRoot = new VBox(20,  p2SceneNameLabel, p2GuiGrid, btP2QuitGame);
+        p2Scene = new Scene ( p2VRoot , 700 , 870) ;
+        p2VRoot.setAlignment(Pos.CENTER);
+
         btStartGame.setOnAction((ActionEvent event) ->{
-            System.out.println("Game is on..");
-            Game game = new Game();
-            game.play();
+            if (!(p1NameInput.getText().trim().isEmpty() || p2NameInput.getText().trim().isEmpty())) {
+                // create a label to display the name of player
+                newGame.getPlayer1().setName(p1NameInput.getText());
+                newGame.getPlayer2().setName(p2NameInput.getText());
+                p1SceneNameLabel.setText(p1NameInput.getText());
+                p1SceneNameLabel.setFont(Font.font("Arial", FontWeight.BOLD,40));
+
+                // create a label to display the name of player2
+                p2SceneNameLabel.setText(p2NameInput.getText());
+                p2SceneNameLabel.setFont(Font.font("Arial", FontWeight.BOLD,40));
+
+                primaryStage.setScene(p1Scene);
+                primaryStage.centerOnScreen();
+
+            }
         });
 
         btCancel.setOnAction((ActionEvent event) ->{
             primaryStage.setScene(welcomeScene);
-            //inputStage.close();
+            primaryStage.centerOnScreen();
         });
 
-        // setting-up a panel to get players' names
-        GridPane p1GuiGrid = new GridPane();
-        p1GuiGrid.setPadding(new Insets(10,10,10,10));
-        p1GuiGrid.setVgap(1);
-        p1GuiGrid.setHgap(1);
-
-        int index = 0;
-        for(int i =0; i<10; i++){
-            for(int j = 0; j<10; j++){
-                Button b = new Button();
-                b.setId(guiGrid.getCells().get(index));
-                b.setText(guiGrid.getCells().get(index));
-                b.setPrefSize(70,70);
-                p1GuiGrid.add(b, j, i);
-
-                index++;
+        btP1QuitGame.setOnAction((ActionEvent event) ->{
+            newGame.setActivePlayer(newGame.getPlayer1());
+            newGame.play("QUIT");
+            if(newGame.getPlayer2().isStillIn()){
+                primaryStage.setScene(p2Scene);
+            } else {
+                primaryStage.setScene(gameOverScene);
             }
-        }
+            primaryStage.centerOnScreen();
+        });
 
-        Scene p1GuiScene = new Scene ( p1GuiGrid , 750 , 600) ;
-        Stage s = new Stage();
-        s.setScene(p1GuiScene);
-        //s.show();
+        btP2QuitGame.setOnAction((ActionEvent event) ->{
+            newGame.setActivePlayer(newGame.getPlayer2());
+            newGame.play("QUIT");
+            if(newGame.getPlayer1().isStillIn()){
+                primaryStage.setScene(p1Scene);
+            } else {
+                primaryStage.setScene(gameOverScene);
+            }
+            primaryStage.centerOnScreen();
+        });
 
-        //newGame.
+        Label gameOverLabel = new Label("*** Game Over ***");
+        gameOverLabel.setFont(Font.font("Arial", FontWeight.BOLD,46));
+
+        gameOverStatsLabel = new Label();
+        gameOverStatsLabel.setFont(Font.font("Arial", FontWeight.NORMAL,20));
+
+        Button gameOverBackBT = new Button("Back to Main");
+        gameOverBackBT.setOnAction((ActionEvent event) ->{
+            primaryStage.setScene(welcomeScene);
+            primaryStage.centerOnScreen();
+        });
+
+        Button gameOverExitBT = new Button("Exit Game");
+        gameOverExitBT.setOnAction((ActionEvent event) ->{
+            primaryStage.close();
+        });
+        VBox gameOverVRoot = new VBox(20,gameOverLabel,gameOverStatsLabel,gameOverBackBT, gameOverExitBT);
+        gameOverVRoot.setAlignment(Pos.CENTER);
+        gameOverScene = new Scene( gameOverVRoot , 400 , 500);
+
+
 
         primaryStage.show();
 
