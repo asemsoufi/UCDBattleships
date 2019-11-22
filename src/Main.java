@@ -26,11 +26,11 @@ public class Main extends Application {
     private Label gameOverStatsLabel;
 
     private void buildPlayerGrid(GridPane g, Stage s){
-        int index1 = 0;
+        int index = 0;
         for(int i =0; i<newGame.getLookupGrid().getRows().length; i++){
             for(int j = 0; j<newGame.getLookupGrid().getColumns().length; j++){
                 Button b = new Button();
-                b.setId(newGame.getLookupGrid().getCells().get(index1));
+                b.setId(newGame.getLookupGrid().getCells().get(index));
                 // b.setText(newGame.getLookupGrid().getCells().get(index1));
                 b.setPrefSize(70,70);
                 b.setOnAction((ActionEvent event) ->{
@@ -66,7 +66,7 @@ public class Main extends Application {
                 });
                 g.add(b, j, i);
 
-                index1++;
+                index++;
             }
         }
     }
