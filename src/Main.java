@@ -12,6 +12,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 
@@ -23,15 +24,26 @@ public class Main extends Application {
     private Scene p1Scene;
     private Scene p2Scene;
     private Scene gameOverScene;
-    private Label gameOverStatsLabel;
 
     private void buildPlayerGrid(GridPane g, Stage s){
         int index = 0;
         for(int i =0; i<newGame.getLookupGrid().getRows().length; i++){
+            Label c = new Label(newGame.getLookupGrid().getColumns()[i]);
+            c.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD,26));
+            c.setMaxWidth(Double.MAX_VALUE);
+            c.setAlignment(Pos.CENTER);
+            g.add(c, i+1,0);
+
+            Label r = new Label(newGame.getLookupGrid().getRows()[i]);
+            r.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD,26));
+            r.setMinWidth(Double.MIN_VALUE);
+            r.setAlignment(Pos.CENTER);
+            g.add(r, 0,i+1);
+
             for(int j = 0; j<newGame.getLookupGrid().getColumns().length; j++){
                 Button b = new Button();
                 b.setId(newGame.getLookupGrid().getCells().get(index));
-                // b.setText(newGame.getLookupGrid().getCells().get(index1));
+                b.setText(newGame.getLookupGrid().getCells().get(index));
                 b.setPrefSize(70,70);
                 b.setOnAction((ActionEvent event) ->{
                     // make a guess
@@ -64,7 +76,7 @@ public class Main extends Application {
                         }
                     }
                 });
-                g.add(b, j, i);
+                g.add(b, j+1, i+1);
 
                 index++;
             }
@@ -134,6 +146,8 @@ public class Main extends Application {
         p1GuiGrid.setPadding(new Insets(10,10,10,10));
         p1GuiGrid.setVgap(1);
         p1GuiGrid.setHgap(1);
+        //p1GuiGrid.setGridLinesVisible(true);
+        p1GuiGrid.setAlignment(Pos.CENTER);
 
         buildPlayerGrid(p1GuiGrid, primaryStage);
 
@@ -144,6 +158,7 @@ public class Main extends Application {
         p2GuiGrid.setPadding(new Insets(10,10,10,10));
         p2GuiGrid.setVgap(1);
         p2GuiGrid.setHgap(1);
+        p2GuiGrid.setAlignment(Pos.CENTER);
 
         buildPlayerGrid(p2GuiGrid, primaryStage);
 
@@ -166,12 +181,12 @@ public class Main extends Application {
 
 
         VBox p1VRoot = new VBox(20, p1SceneNameLabel, p1GuiGrid, btP1QuitGame);
-        p1Scene = new Scene( p1VRoot , 700 , 870);
         p1VRoot.setAlignment(Pos.CENTER);
+        p1Scene = new Scene( p1VRoot , 900 , 920);
 
         VBox p2VRoot = new VBox(20,  p2SceneNameLabel, p2GuiGrid, btP2QuitGame);
-        p2Scene = new Scene ( p2VRoot , 700 , 870) ;
         p2VRoot.setAlignment(Pos.CENTER);
+        p2Scene = new Scene ( p2VRoot , 900 , 920) ;
 
         btStartGame.setOnAction((ActionEvent event) ->{
             if (p1NameInput.getText().trim().isEmpty() || p2NameInput.getText().trim().isEmpty() ||
@@ -235,14 +250,14 @@ public class Main extends Application {
         Label gameOverLabel = new Label("*** Game Over ***");
         gameOverLabel.setFont(Font.font("Arial", FontWeight.BOLD,46));
 
-        gameOverStatsLabel = new Label();
+        Label gameOverStatsLabel = new Label();
         gameOverStatsLabel.setFont(Font.font("Arial", FontWeight.NORMAL,20));
 
         Button gameOverExitBT = new Button("Exit Game");
         gameOverExitBT.setOnAction((ActionEvent event) ->{
             primaryStage.close();
         });
-        VBox gameOverVRoot = new VBox(20,gameOverLabel,gameOverStatsLabel, gameOverExitBT);
+        VBox gameOverVRoot = new VBox(20,gameOverLabel, gameOverStatsLabel, gameOverExitBT);
         gameOverVRoot.setAlignment(Pos.CENTER);
         gameOverScene = new Scene( gameOverVRoot , 400 , 500);
 
