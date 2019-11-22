@@ -168,16 +168,14 @@ public class Game {
                 System.out.println("And The winner is " + winner.getName());
                 System.out.println("Below is your game summary:");
                 System.out.println(gameStats(winner));
-                infoMessage = gameStats(winner);
-            } else {
-                System.out.println("There is no winner! Both players quit the game early :(");
+                infoMessage = "The winner is "+winner.getName()+".\n"+gameStats(winner);
+            } else if (!player1.isStillIn() && !player2.isStillIn()) {
                 infoMessage = "There is no winner! Both players quit the game early :(";
+                System.out.println(infoMessage);
             }
 
             System.out.println("Below is the original battleships distribution map, have a look ;)");
             deployedGrid.plot();
         }
-
     }
-
 }

@@ -203,7 +203,7 @@ public class Main extends Application {
         btP1QuitGame.setOnAction((ActionEvent event) ->{
             if(newGame.isGameOver()){
                 primaryStage.setScene(gameOverScene);
-                gameOverStatsLabel.setText(newGame.getInfoMessage());
+                //gameOverStatsLabel.setText(newGame.getInfoMessage());
             } else {
                 newGame.setActivePlayer(newGame.getPlayer1());
                 newGame.play("QUIT");
@@ -219,7 +219,7 @@ public class Main extends Application {
         btP2QuitGame.setOnAction((ActionEvent event) ->{
             if(newGame.isGameOver()){
                 primaryStage.setScene(gameOverScene);
-                gameOverStatsLabel.setText(newGame.getInfoMessage());
+                //gameOverStatsLabel.setText(newGame.getInfoMessage());
             } else {
                 newGame.setActivePlayer(newGame.getPlayer2());
                 newGame.play("QUIT");
@@ -237,13 +237,6 @@ public class Main extends Application {
 
         gameOverStatsLabel = new Label();
         gameOverStatsLabel.setFont(Font.font("Arial", FontWeight.NORMAL,20));
-
-        /*Button gameOverBackBT = new Button("Back to Main");
-        gameOverBackBT.setOnAction((ActionEvent event) ->{
-            newGame = new Game();
-            primaryStage.setScene(welcomeScene);
-            primaryStage.centerOnScreen();
-        });*/
 
         Button gameOverExitBT = new Button("Exit Game");
         gameOverExitBT.setOnAction((ActionEvent event) ->{
