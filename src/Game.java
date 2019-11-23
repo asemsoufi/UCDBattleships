@@ -170,7 +170,7 @@ public class Game {
                 System.out.println(gameStats(winner));
                 infoMessage = "The winner is "+winner.getName()+".\n"+gameStats(winner);
             } else if (!player1.isStillIn() && !player2.isStillIn()) {
-                infoMessage = "There is no winner! Both players quit the game early :(";
+                infoMessage = "There is no winner!\n Both players quit the game early :(";
                 System.out.println(infoMessage);
             }
 

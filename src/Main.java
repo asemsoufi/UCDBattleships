@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 
@@ -266,6 +267,9 @@ public class Main extends Application {
 
         gameOverStatsLabel = new Label();
         gameOverStatsLabel.setFont(Font.font("Arial", FontWeight.NORMAL,26));
+        gameOverStatsLabel.setWrapText(true);
+        gameOverStatsLabel.setTextAlignment(TextAlignment.CENTER);
+        gameOverStatsLabel.setAlignment(Pos.CENTER);
 
         Button gameOverExitBT = new Button("Exit Game");
         gameOverExitBT.setOnAction((ActionEvent event) ->{
@@ -273,7 +277,7 @@ public class Main extends Application {
         });
         VBox gameOverVRoot = new VBox(20,gameOverLabel, gameOverStatsLabel, gameOverExitBT);
         gameOverVRoot.setAlignment(Pos.CENTER);
-        gameOverScene = new Scene( gameOverVRoot , 500 , 500);
+        gameOverScene = new Scene( gameOverVRoot , 600 , 400);
 
 
 
