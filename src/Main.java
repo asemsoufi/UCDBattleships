@@ -10,9 +10,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 
@@ -24,6 +24,9 @@ public class Main extends Application {
     private Scene p1Scene;
     private Scene p2Scene;
     private Scene gameOverScene;
+    Label p1SceneNameLabel;
+    Label p2SceneNameLabel;
+    Label gameOverStatsLabel;
 
     private void buildPlayerGrid(GridPane g, Stage s){
         int index = 0;
@@ -43,7 +46,7 @@ public class Main extends Application {
             for(int j = 0; j<newGame.getLookupGrid().getColumns().length; j++){
                 Button b = new Button();
                 b.setId(newGame.getLookupGrid().getCells().get(index));
-                b.setText(newGame.getLookupGrid().getCells().get(index));
+                //b.setText(newGame.getLookupGrid().getCells().get(index));
                 b.setPrefSize(70,70);
                 b.setOnAction((ActionEvent event) ->{
                     // make a guess
@@ -60,6 +63,13 @@ public class Main extends Application {
                     }
                     // end game if that was the last hit
                     if(newGame.isGameOver()){
+                        if(newGame.getActivePlayer()==newGame.getPlayer1()){
+                            p1SceneNameLabel.setText(newGame.getPlayer1().getName()+", You Won!!!");
+                            p1SceneNameLabel.setTextFill(Color.GREEN);
+                        } else {
+                            p2SceneNameLabel.setText(newGame.getPlayer2().getName()+", You Won!!!");
+                            p2SceneNameLabel.setTextFill(Color.GREEN);
+                        }
                         g.setDisable(true);
                         //s.setScene(gameOverScene);
                         //gameOverStatsLabel.setText(newGame.getInfoMessage());
@@ -176,8 +186,8 @@ public class Main extends Application {
             primaryStage.close();
         });
 
-        Label p1SceneNameLabel = new Label();
-        Label p2SceneNameLabel = new Label();
+        p1SceneNameLabel = new Label();
+        p2SceneNameLabel = new Label();
 
 
         VBox p1VRoot = new VBox(20, p1SceneNameLabel, p1GuiGrid, btP1QuitGame);
@@ -217,6 +227,7 @@ public class Main extends Application {
 
         btP1QuitGame.setOnAction((ActionEvent event) ->{
             if(newGame.isGameOver()){
+                gameOverStatsLabel.setText(newGame.getInfoMessage());
                 primaryStage.setScene(gameOverScene);
                 //gameOverStatsLabel.setText(newGame.getInfoMessage());
             } else {
@@ -225,6 +236,7 @@ public class Main extends Application {
                 if (newGame.getPlayer2().isStillIn()) {
                     primaryStage.setScene(p2Scene);
                 } else {
+                    gameOverStatsLabel.setText(newGame.getInfoMessage());
                     primaryStage.setScene(gameOverScene);
                 }
             }
@@ -233,6 +245,7 @@ public class Main extends Application {
 
         btP2QuitGame.setOnAction((ActionEvent event) ->{
             if(newGame.isGameOver()){
+                gameOverStatsLabel.setText(newGame.getInfoMessage());
                 primaryStage.setScene(gameOverScene);
                 //gameOverStatsLabel.setText(newGame.getInfoMessage());
             } else {
@@ -241,6 +254,7 @@ public class Main extends Application {
                 if (newGame.getPlayer1().isStillIn()) {
                     primaryStage.setScene(p1Scene);
                 } else {
+                    gameOverStatsLabel.setText(newGame.getInfoMessage());
                     primaryStage.setScene(gameOverScene);
                 }
             }
@@ -250,8 +264,8 @@ public class Main extends Application {
         Label gameOverLabel = new Label("*** Game Over ***");
         gameOverLabel.setFont(Font.font("Arial", FontWeight.BOLD,46));
 
-        Label gameOverStatsLabel = new Label();
-        gameOverStatsLabel.setFont(Font.font("Arial", FontWeight.NORMAL,20));
+        gameOverStatsLabel = new Label();
+        gameOverStatsLabel.setFont(Font.font("Arial", FontWeight.NORMAL,26));
 
         Button gameOverExitBT = new Button("Exit Game");
         gameOverExitBT.setOnAction((ActionEvent event) ->{
@@ -259,7 +273,7 @@ public class Main extends Application {
         });
         VBox gameOverVRoot = new VBox(20,gameOverLabel, gameOverStatsLabel, gameOverExitBT);
         gameOverVRoot.setAlignment(Pos.CENTER);
-        gameOverScene = new Scene( gameOverVRoot , 400 , 500);
+        gameOverScene = new Scene( gameOverVRoot , 500 , 500);
 
 
 
