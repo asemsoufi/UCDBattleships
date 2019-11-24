@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public abstract class Ship {
 
-    private int lives;
+    //private int lives;
     private ArrayList<String> body;
 
 
@@ -11,7 +11,6 @@ public abstract class Ship {
             throw new IllegalArgumentException("Number of cells can only be between 1-4!");
         }
         this.body = body;
-        this.lives = body.size();
     }
 
     public ArrayList<String> getBody(){
@@ -22,15 +21,6 @@ public abstract class Ship {
         return getBody().size();
     }
 
-    public int getLives() {
-        return lives;
-    }
-
-    public void reduceLives(){
-        if(lives != 0){
-            lives-=1;
-        }
-    }
 
     public String toString(){
         String bodyString = "[";
@@ -39,10 +29,4 @@ public abstract class Ship {
         }
         return "I'm a "+getClass().getSimpleName()+", and I'm located at "+bodyString;
     }
-
-    public boolean isDistroyed(){
-        return getLives()==0;
-    }
-
-
 }
