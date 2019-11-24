@@ -84,6 +84,10 @@ public class Game {
         return lookupGrid;
     }
 
+    public Grid getDeployedGrid() {
+        return deployedGrid;
+    }
+
     public boolean isGameOver() {
         return gameOver;
     }

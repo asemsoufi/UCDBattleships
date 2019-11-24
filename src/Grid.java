@@ -178,7 +178,7 @@ public class Grid {
             } else if (ship instanceof Cruiser) {
                 cells.set(cells.indexOf(shipCell), "CRU");
             } else if (ship instanceof Destroyer) {
-                cells.set(cells.indexOf(shipCell), "DIS");
+                cells.set(cells.indexOf(shipCell), "DES");
             } else if (ship instanceof Submarine) {
                 cells.set(cells.indexOf(shipCell), "SUB");
             }

@@ -1,17 +1,17 @@
 import java.util.ArrayList;
-//import java.util.Scanner;
+import java.util.Scanner;
 
 public class Player {
 
     private String name;
-    private boolean stillIn;  // this wil be false should the player decide to quit the game before it ends
+    private boolean stillIn;
     private int hitCounter;
     private int missCounter;
     private Grid grid;
     private ArrayList<String> myTargetCells;
 
     public Player(){
-        stillIn = true;
+        stillIn = true;   // this wil be false should the player decide to quit the game before it ends
         hitCounter = 0;
         missCounter = 0;
         grid = new Grid();
@@ -24,16 +24,6 @@ public class Player {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String makeGuess(String userGuess){
-        /*String userGuess = "";
-        while(!(grid.getCells().contains(userGuess.toUpperCase())) && !userGuess.equals("QUIT")) {
-            Scanner input = new Scanner(System.in);
-            System.out.print("Make a guess? ");
-            userGuess = input.nextLine().toUpperCase();
-        }*/
-        return userGuess;
     }
 
     public void setTargetCells(ArrayList<String> targetCells){
@@ -76,10 +66,4 @@ public class Player {
         return hitCounter+missCounter;
     }
 
-    /*public static void main(String[] args) {
-        Player me = new Player();
-        System.out.println(me.getName());
-
-        me.grid.plot();
-    }*/
 }
