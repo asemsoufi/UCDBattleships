@@ -61,7 +61,7 @@ public class Grid {
                         }
                     }
                     break;
-                case "DISTROYER":
+                case "DESTROYER":
                     for(int i = 1; i<=Integer.parseInt(aShip[1]); i++){
                         double rand = Math.random();
                         if(rand >0.5){

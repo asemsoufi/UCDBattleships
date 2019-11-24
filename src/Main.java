@@ -29,24 +29,24 @@ public class Main extends Application {
     Label p2SceneNameLabel;
     Label gameOverStatsLabel;
 
-    private void buildPlayerGrid(GridPane g, Stage s){
+    private void buildPlayerGrid(Grid g, GridPane gp, Stage s){
         int index = 0;
-        for(int i =0; i<newGame.getLookupGrid().getRows().length; i++){
-            Label c = new Label(newGame.getLookupGrid().getColumns()[i]);
+        for(int i =0; i<g.getRows().length; i++){
+            Label c = new Label(g.getColumns()[i]);
             c.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD,26));
             c.setMaxWidth(Double.MAX_VALUE);
             c.setAlignment(Pos.CENTER);
-            g.add(c, i+1,0);
+            gp.add(c, i+1,0);
 
-            Label r = new Label(newGame.getLookupGrid().getRows()[i]);
+            Label r = new Label(g.getRows()[i]);
             r.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD,26));
             r.setMinWidth(Double.MIN_VALUE);
             r.setAlignment(Pos.CENTER);
-            g.add(r, 0,i+1);
+            gp.add(r, 0,i+1);
 
-            for(int j = 0; j<newGame.getLookupGrid().getColumns().length; j++){
+            for(int j = 0; j<g.getColumns().length; j++){
                 Button b = new Button();
-                b.setId(newGame.getLookupGrid().getCells().get(index));
+                b.setId(g.getCells().get(index));
                 //b.setText(newGame.getLookupGrid().getCells().get(index));
                 b.setPrefSize(70,70);
                 b.setOnAction((ActionEvent event) ->{
@@ -56,10 +56,12 @@ public class Main extends Application {
                     if(newGame.itIsAHit()){
                         b.setText("HIT");
                         b.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD,20));
+                        b.setStyle("-fx-background-color: MediumSeaGreen");
                         b.setDisable(true);
                     } else{
                         b.setText(" X ");
                         b.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD,24));
+                        b.setStyle("-fx-background-color: IndianRed");
                         b.setDisable(true);
                     }
                     // end game if that was the last hit
@@ -71,7 +73,7 @@ public class Main extends Application {
                             p2SceneNameLabel.setText(newGame.getPlayer2().getName()+", You Won!!!");
                             p2SceneNameLabel.setTextFill(Color.GREEN);
                         }
-                        g.setDisable(true);
+                        gp.setDisable(true);
                         //s.setScene(gameOverScene);
                         //gameOverStatsLabel.setText(newGame.getInfoMessage());
                         //s.centerOnScreen();
@@ -87,7 +89,7 @@ public class Main extends Application {
                         }
                     }
                 });
-                g.add(b, j+1, i+1);
+                gp.add(b, j+1, i+1);
 
                 index++;
             }
@@ -124,7 +126,7 @@ public class Main extends Application {
         Label p1Namelabel = new Label("Player1 Name:");
         TextField p1NameInput = new TextField();
         p1NameInput.setPromptText("type first player's name");
-        Label p2Namelabel = new Label("Player1 Name:");
+        Label p2Namelabel = new Label("Player2 Name:");
         TextField p2NameInput = new TextField();
         p2NameInput.setPromptText("type second player's name");
 
@@ -160,7 +162,7 @@ public class Main extends Application {
         //p1GuiGrid.setGridLinesVisible(true);
         p1GuiGrid.setAlignment(Pos.CENTER);
 
-        buildPlayerGrid(p1GuiGrid, primaryStage);
+        buildPlayerGrid(newGame.getLookupGrid(), p1GuiGrid, primaryStage);
 
         Button btP1QuitGame = new Button ( "Quit Game!" ) ;
 
@@ -171,7 +173,7 @@ public class Main extends Application {
         p2GuiGrid.setHgap(1);
         p2GuiGrid.setAlignment(Pos.CENTER);
 
-        buildPlayerGrid(p2GuiGrid, primaryStage);
+        buildPlayerGrid(newGame.getLookupGrid(), p2GuiGrid, primaryStage);
 
         Button btP2QuitGame = new Button ( "Quit Game!" ) ;
 
@@ -201,13 +203,16 @@ public class Main extends Application {
 
         btStartGame.setOnAction((ActionEvent event) ->{
             if (p1NameInput.getText().trim().isEmpty() || p2NameInput.getText().trim().isEmpty() ||
-            p2NameInput.getText().trim().toUpperCase().equals(p1NameInput.getText().trim().toUpperCase())) {
+                    p2NameInput.getText().trim().toUpperCase().equals(p1NameInput.getText().trim().toUpperCase())) {
                 inputInfoLabel.setText("Players' names can't be empty or equal!");
+            }
+            else if (p1NameInput.getText().trim().length()>15 || p2NameInput.getText().trim().length()>15){
+                inputInfoLabel.setText("A Player's name can't be more than 15 letters long!");
             }
             else {
                 // create a label to display the name of player
-                newGame.getPlayer1().setName(p1NameInput.getText());
-                newGame.getPlayer2().setName(p2NameInput.getText());
+                newGame.getPlayer1().setName(p1NameInput.getText().trim());
+                newGame.getPlayer2().setName(p2NameInput.getText().trim());
                 p1SceneNameLabel.setText(p1NameInput.getText());
                 p1SceneNameLabel.setFont(Font.font("Arial", FontWeight.BOLD,40));
 

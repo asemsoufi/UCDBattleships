@@ -67,7 +67,7 @@ public class Game {
     }
 
     public String gameStats(Player p){
-        String s1 = p.getName()+" made "+p.shots()+(p.shots()==0?" shots.\n":" shot\n");
+        String s1 = p.getName()+" made "+p.shots()+(p.shots()==0?" shot.\n":" shots.\n");
         String s2 = p.shots()==0? "" : p.getName()+"'s aiming accuracy was "+
                 (int)((float)p.getHitCounter()/(float)p.shots() * 100) + "%";
         return s1+s2;
