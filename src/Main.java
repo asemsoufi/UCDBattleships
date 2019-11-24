@@ -25,9 +25,9 @@ public class Main extends Application {
     private Scene p1Scene;
     private Scene p2Scene;
     private Scene gameOverScene;
-    Label p1SceneNameLabel;
-    Label p2SceneNameLabel;
-    Label gameOverStatsLabel;
+    private Label p1SceneNameLabel;
+    private Label p2SceneNameLabel;
+    private Label gameOverStatsLabel;
 
     private void buildPlayerGrid(Grid g, GridPane gp, Stage s){
         int index = 0;
@@ -147,6 +147,7 @@ public class Main extends Application {
         Button btCancel = new Button ( "Cancel" ) ;
 
         Label inputInfoLabel = new Label();
+        inputInfoLabel.setTextFill(Color.RED);
 
         VBox inputRoot = new VBox(30 , inputGrid, inputInfoLabel, btStartGame , btCancel);
         inputRoot.setAlignment(Pos.CENTER);
@@ -185,9 +186,7 @@ public class Main extends Application {
         });
 
 
-        btExit.setOnAction((ActionEvent event) ->{
-            primaryStage.close();
-        });
+        btExit.setOnAction((ActionEvent event) -> primaryStage.close());
 
         p1SceneNameLabel = new Label();
         p2SceneNameLabel = new Label();
@@ -284,16 +283,12 @@ public class Main extends Application {
         gameOverVRoot.setAlignment(Pos.CENTER);
         gameOverScene = new Scene( gameOverVRoot , 600 , 400);
 
-
-
         primaryStage.show();
-
     }
 
     public static void main(String[] args) {
 
         Application.launch(args);
-
 
     }
 

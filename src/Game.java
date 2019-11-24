@@ -17,9 +17,7 @@ public class Game {
 
     public Game(){
 
-        //System.out.println("Getting first player's name.");
         player1 = new Player();
-        //System.out.println("Getting second player's name.");
         player2 = new Player();
 
         activePlayer = player1;
@@ -29,23 +27,16 @@ public class Game {
         lookupGrid = new Grid();
 
         deployedGrid = new Grid();
-        //System.out.println(deployedGrid.getCells().toString());
-        //showGrid();
-
-        //System.out.println("deploying ships...");
 
         deployedGrid.deployShips();
-        //System.out.println(deployedGrid.getCells().toString());
-        //showGrid();
+
         System.out.println(deployedGrid.getTargetCells().toString());
 
-        // give each player his own copy of target cells
+        // give each player his own copy of similar target cells
         player1.setTargetCells(deployedGrid.getTargetCells());
         player2.setTargetCells(deployedGrid.getTargetCells());
 
         gameOver = false;
-
-        //main = new Main();
     }
 
     public void switchPlayer(){
@@ -62,9 +53,6 @@ public class Game {
         return isAHit;
     }
 
-    public void showGrid(){
-        deployedGrid.plot();
-    }
 
     public String gameStats(Player p){
         String s1 = p.getName()+" made "+p.shots()+(p.shots()==0?" shot.\n":" shots.\n");
@@ -77,17 +65,11 @@ public class Game {
         return player1;
     }
 
-    public void setPlayer1(Player player1) {
-        this.player1 = player1;
-    }
 
     public Player getPlayer2() {
         return player2;
     }
 
-    public void setPlayer2(Player player2) {
-        this.player2 = player2;
-    }
 
     public Player getActivePlayer() {
         return activePlayer;
@@ -97,9 +79,6 @@ public class Game {
         this.activePlayer = p;
     }
 
-    public Player getWinner() {
-        return winner;
-    }
 
     public Grid getLookupGrid() {
         return lookupGrid;

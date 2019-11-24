@@ -11,11 +11,6 @@ public class Player {
     private ArrayList<String> myTargetCells;
 
     public Player(){
-        /*while(this.name.isEmpty() || this.name.trim().isEmpty()) {
-            Scanner input = new Scanner(System.in);
-            System.out.print("Enter a name: ");
-            this.name = input.nextLine().toUpperCase();
-        }*/
         stillIn = true;
         hitCounter = 0;
         missCounter = 0;

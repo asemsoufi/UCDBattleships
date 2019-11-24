@@ -25,7 +25,7 @@ public class Grid {
     }
 
     public void deployShips(){
-        //ArrayList<String> tempList = new ArrayList<>();
+
         //randomly generate and add ships to the grid
         for (String[] aShip : noOfShips) {
             switch(aShip[0].toUpperCase()){
@@ -36,12 +36,12 @@ public class Grid {
                             // create and place Battleship horizontally
                             Ship bat = new Battleship(getCellsHorizontal(4));
                             ships.add(bat);
-                            //mainGrid.markShip(bat);
+
                         } else{
                             // create and place Battleship vertically
                             Ship bat = new Battleship(getCellsVertical(4));
                             ships.add(bat);
-                            //mainGrid.markShip(bat);
+
                         }
                     }
                     break;
@@ -52,12 +52,12 @@ public class Grid {
                             // create and place Cruiser horizontally
                             Ship cru = new Cruiser(getCellsHorizontal(3));
                             ships.add(cru);
-                            //mainGrid.markShip(cru);
+
                         } else{
                             // create and place Cruiser vertically
                             Ship cru = new Cruiser(getCellsVertical(3));
                             ships.add(cru);
-                            //mainGrid.markShip(cru);
+
                         }
                     }
                     break;
@@ -68,12 +68,12 @@ public class Grid {
                             // create and place Destroyer horizontally
                             Ship dis = new Destroyer(getCellsHorizontal(2));
                             ships.add(dis);
-                            //mainGrid.markShip(dis);
+
                         } else{
                             // create and place Destroyer vertically
                             Ship dis = new Destroyer(getCellsVertical(2));
                             ships.add(dis);
-                            //mainGrid.markShip(dis);
+
                         }
                     }
                     break;
@@ -82,41 +82,45 @@ public class Grid {
                         // create and place Submarine, no orientation applies here
                         Ship sub = new Submarine(getCellsVertical(1));
                         ships.add(sub);
-                        //mainGrid.markShip(sub);
+
                     }
             }
         }
-        // mark ships on the main grid. This is for testing purposes only, and will be hidden from the player.
+        // mark ships on the main grid. This is for testing purposes only, and will be hidden from the players.
         for(Ship ship : ships){
             markShip(ship);
         }
     }
 
     private ArrayList<String> getCellsHorizontal(int numberOfCells){
-        //System.out.println("method getCellsHorizontal started");
+        // make sure a (valid & available) number of cells is passed to the method
         checkNumOfCells(numberOfCells);
-        boolean success = false;
+        boolean success = false;    // this will be true once a ship has been deployed successfully
         ArrayList<String> tempHorArray = new ArrayList<>();
+        // until successful, keep trying to find a sequence of cells on the grid to deploy next ship
         while(!success) {
-            //System.out.println("trying to get cells horizontally");
+            // trying to get cells horizontally
             // pick a random row (1-10)
             int rowNumber = (int) (Math.random() * (9)) + 1;
-            // pick a random column (A-J), but considering length of ship
+            // pick a random column (A-J), but also considering length of ship
             // (i.e. number of cells needed horizontally)
             int columnIndex = (int) (Math.random() * (9 - numberOfCells)) + 1;
             for(int j = columnIndex; j< (columnIndex + numberOfCells); j++){
                 String columnLetter = getColumns()[j];
                 tempHorArray.add(columnLetter + rowNumber);
             }
+            // success, if picked cells are all available and match the size of selected ship
             if (availableCells.containsAll(tempHorArray) && tempHorArray.size()==numberOfCells){
                 success = true;
-                //System.out.println("Success, here are the cells I picked "+tempHorArray.toString());
+                // Success, I picked required cells on the grid
             } else {
-                //System.out.println("failed this time, will try again..");
+                // failed this time, will try again..
+                // drop previously selected cells and start over clean
                 tempHorArray.clear();
             }
         }
-        // remove cells assigned to the new ship, so that it can't be accidentally re-assigned to another ship
+        // remove cells assigned to the new ship from available cells list,
+        // so that it can't be accidentally re-assigned to another ship
         availableCells.removeAll(tempHorArray);
         // a new ship was added successfully to the grid and needs to be marked as possible target
         targetCells.addAll(tempHorArray);
@@ -124,44 +128,49 @@ public class Grid {
     }
 
     private ArrayList<String> getCellsVertical(int numberOfCells){
-        //System.out.println("method getCellsVertical started");
+        // make sure a (valid & available) number of cells is passed to the method
         checkNumOfCells(numberOfCells);
         boolean success = false;
         ArrayList<String> tempVerArray = new ArrayList<>();
         while(!success) {
-            //System.out.println("trying to get cells vertically");
+            // trying to get cells vertically
             // pick a random column (A-J)
             int columnIndex = (int) (Math.random() * 9);
             String columnLetter = getColumns()[columnIndex];
-            //System.out.println("I picked column "+columnLetter);
-            // pick a random row (1-10), but considering length of ship(i.e. number of cells needed vertically)
+            // pick a random row (1-10), but also considering length of ship
+            // (i.e. number of cells needed vertically)
             int rowNumber = (int) (Math.random() * (10 - numberOfCells)) + 1;
             for(int i = rowNumber; i< rowNumber + numberOfCells; i++){
                 tempVerArray.add(columnLetter + i);
                 //System.out.println("Adding cell "+(columnLetter + i)+" vertically to the grid.");
             }
+            // success, if picked cells are all available and match the size of selected ship
             if (availableCells.containsAll(tempVerArray) && tempVerArray.size()==numberOfCells){
                 success = true;
-                //System.out.println("Success, here are the cells I picked "+tempVerArray.toString());
             } else {
-                //System.out.println("failed this time, will try again..");
-                //clear previous selection and start over again
+                // failed this time, will try again..
+                // drop previously selected cells and start over clean
                 tempVerArray.clear();
             }
         }
-        // remove cells assigned to the new ship, so that it can't be accidentally re-assigned to another ship
+        // remove cells assigned to the new ship,
+        // so that it can't be accidentally re-assigned to another ship
         availableCells.removeAll(tempVerArray);
         // a new ship was added successfully to the grid and needs to be marked as possible target
         targetCells.addAll(tempVerArray);
         return tempVerArray;
     }
 
+    // a method to make sure a (valid & available) number of cells is still available in the grid,
+    // and more ships can be deployed
     private void checkNumOfCells(int numberOfCells) {
         if(numberOfCells<1 || numberOfCells>4 || availableCells.size()<numberOfCells) {
             throw new IllegalArgumentException("The grid can't assign this number of cells.");
         }
     }
 
+    // this method marks deployed ships on the map/grid, for testing purposes or at the end of the game,
+    // but will be hidden from players until they had finished playing
     private void markShip(Ship ship){
         for(String shipCell:ship.getBody()){
             if (ship instanceof Battleship) {
@@ -176,26 +185,31 @@ public class Grid {
         }
     }
 
+    // mark a "HIT" string on the cell once a successful hit is made (terminal version)
     void markHit(int cellNr){
         if(cellNr>=0 && cellNr < cells.size()) {
             cells.set(cellNr, "HIT");
         }
     }
 
+    // mark a miss by printing " X " string on the cell once a miss is made (terminal version)
     void markMiss(int cellNr){
         if(cellNr>=0 && cellNr < cells.size()) {
             cells.set(cellNr, "X");
         }
     }
 
+    // returns all available cells on the grid
     public ArrayList<String> getCells() {
         return cells;
     }
 
+    // returns all deployed cells on the grid (all cells that are part of a ship and are targets)
     public ArrayList<String> getTargetCells() {
         return targetCells;
     }
 
+    // plot grid to the terminal
     public void plot(){
         int counter = 0;
         System.out.println("     A     B     C     D     E     F     G     H     I     J");
@@ -244,33 +258,6 @@ public class Grid {
 
     public String[] getRows() {
         return rows;
-    }
-
-    public static void main(String[] args) {
-        Grid g = new Grid();
-        System.out.println(g.getCells().toString());
-        /*g.markHit(10);
-        g.markHit(16);
-        g.markMiss(40);
-        g.markHit(55);
-        g.markHit(62);
-        g.markMiss(70);
-        g.markHit(99);
-
-        /*Ship s1; //= new Battleship(new String[]{"A1", "B1", "C1", "D1"});
-        System.out.println(s1.toString());
-        g.markShip(s1);
-
-        Ship s2; //= new Cruiser(new String[]{"H8", "H9", "H10"});
-        System.out.println(s2.toString());
-        g.markShip(s2);*/
-
-        //System.out.println(g.cells.toString());
-        /*System.out.println(g.cells.get(99));
-        System.out.println(g.cells.size());
-        System.out.println(g.cells.indexOf("B1"));
-
-        g.plot();*/
     }
 
 }
