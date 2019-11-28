@@ -1,5 +1,6 @@
-//import java.io.IOException;
-import java.sql.SQLOutput;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 
 
 public class Game {
@@ -13,6 +14,7 @@ public class Game {
     private boolean gameOver;
     private boolean isAHit;
     private String infoMessage;
+
 
 
     public Game(){
@@ -30,13 +32,17 @@ public class Game {
 
         deployedGrid.deployShips();
 
-        System.out.println(deployedGrid.getTargetCells().toString());
+        //System.out.println(deployedGrid.getTargetCells().toString());
 
         // give each player his own copy of similar target cells
         player1.setTargetCells(deployedGrid.getTargetCells());
         player2.setTargetCells(deployedGrid.getTargetCells());
 
         gameOver = false;
+    }
+
+    public int winnerScore(){
+        return (int)((float)winner.getHitCounter()/(float)winner.shots() * 100);
     }
 
     public void switchPlayer(){
@@ -56,8 +62,7 @@ public class Game {
 
     public String gameStats(Player p){
         String s1 = p.getName()+" made "+p.shots()+(p.shots()==0?" shot.\n":" shots.\n");
-        String s2 = p.shots()==0? "" : p.getName()+"'s aiming accuracy was "+
-                (int)((float)p.getHitCounter()/(float)p.shots() * 100) + "%";
+        String s2 = p.shots()==0? "" : p.getName()+"'s aiming accuracy was "+ winnerScore() + "%";
         return s1+s2;
     }
 
@@ -152,6 +157,28 @@ public class Game {
                 System.out.println("Below is your game summary:");
                 System.out.println(gameStats(winner));
                 infoMessage = "The winner is "+winner.getName()+".\n"+gameStats(winner);
+                try{
+                    Connection con = GameDB.dbCon();
+                    Statement stmt = GameDB.dbCon().createStatement();
+                    String createScoresTable = "CREATE TABLE IF NOT EXISTS battleshipdb."+
+                            "scores(game_id INT(11) NOT NULL,player_name VARCHAR(45) NOT NULL,"+
+                    "aiming_accuracy INT(11) NOT NULL, date"+
+                            " DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,"+
+                    "PRIMARY KEY (game_id))";
+                    stmt.executeUpdate(createScoresTable);
+
+                    PreparedStatement insertWinnerData = con.prepareStatement("INSERT INTO battleshipdb.scores (player_name, aimimg_accuracy) VALUES (?,?)");
+                    insertWinnerData.setString(1, winner.getName());
+                    insertWinnerData.setInt(2,winnerScore());
+                    insertWinnerData.executeUpdate();
+
+                    infoMessage = "The winner is "+winner.getName()+".\n"+gameStats(winner)+"\n"+
+                    "This score has been recorded.";
+                } catch(Exception ex) {
+                    System.out.println("Something went wrong with the database!");
+                    ex.printStackTrace();
+                }
+
             } else if (!player1.isStillIn() && !player2.isStillIn()) {
                 infoMessage = "There is no winner!\n Both players quit the game early :(";
                 System.out.println(infoMessage);

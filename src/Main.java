@@ -57,6 +57,7 @@ public class Main extends Application {
                     b.setText(b.getId());
                     b.setPrefSize(70,70);
                     b.setFont(Font.font("Arial", FontWeight.BOLD,18));
+                    b.setTextFill(Color.BLUEVIOLET);
                     b.setStyle("-fx-background-color: YELLOW");
                     b.setDisable(true);
                     gp.setDisable(true);
@@ -176,7 +177,6 @@ public class Main extends Application {
         p1GuiGrid.setPadding(new Insets(10,10,10,10));
         p1GuiGrid.setVgap(1);
         p1GuiGrid.setHgap(1);
-        //p1GuiGrid.setGridLinesVisible(true);
         p1GuiGrid.setAlignment(Pos.CENTER);
 
         buildPlayerGrid(newGame.getLookupGrid(), p1GuiGrid, primaryStage);
@@ -223,11 +223,13 @@ public class Main extends Application {
 
 
         VBox p1VRoot = new VBox(10, p1SceneNameLabel, p1GuiGrid, btP1ShowOriginal, btP1QuitGame);
+        //p1VRoot.setStyle("-fx-background-color:#FDF877;");
         p1VRoot.setAlignment(Pos.CENTER);
         p1Scene = new Scene( p1VRoot , 900 , 930);
 
         VBox p2VRoot = new VBox(10,  p2SceneNameLabel, p2GuiGrid, btP2ShowOriginal, btP2QuitGame);
         p2VRoot.setAlignment(Pos.CENTER);
+        p2VRoot.setStyle("-fx-background-color:#C4F1CE;");
         p2Scene = new Scene ( p2VRoot , 900 , 930) ;
 
         btStartGame.setOnAction((ActionEvent event) ->{
@@ -264,7 +266,6 @@ public class Main extends Application {
             if(newGame.isGameOver()){
                 gameOverStatsLabel.setText(newGame.getInfoMessage());
                 primaryStage.setScene(gameOverScene);
-                //gameOverStatsLabel.setText(newGame.getInfoMessage());
             } else {
                 newGame.setActivePlayer(newGame.getPlayer1());
                 newGame.play("QUIT");
