@@ -7,5 +7,11 @@
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/battleshipdb</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="jdbc:mysql://folding03.ucd.ie:3306/" uuid="7bd374cc-6948-4b5c-b6cf-d4d176b34450">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://folding03.ucd.ie:3306/db17210556</jdbc-url>
+    </data-source>
   </component>
 </project>

@@ -113,8 +113,19 @@ public class Main extends Application {
         }
     }
 
+    /*private ObservableList<String> fetchNames(Connection con) throws SQLException {
+        ObservableList<String> scoresBoard = FXCollections.observableArrayList();
+
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery("select * from battleshipdb.scores");
+        while (rs.next()) {
+            scoresBoard.addAll();
+        }
+        return scoresBoard;
+    }*/
+
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
 
         newGame = new Game();
 

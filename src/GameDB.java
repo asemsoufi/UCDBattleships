@@ -2,12 +2,18 @@ import java.sql.*;
 
 public class GameDB {
 
-    private static String dbName, username, password;
+    private static String location, dbName, username, password;
 
     public static Connection dbCon() throws SQLException {
 
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            /*location = "jdbc:mysql://folding03.ucd.ie:3306/";
+            dbName = "db17210556";
+            username = "u17210556";
+            password = "COMP20300";*/
+
+            location = "jdbc:mysql://localhost:3306/";
             dbName = "battleshipdb";
             username = "asem";
             password = "0500821362";
@@ -17,8 +23,6 @@ public class GameDB {
             ex.printStackTrace();
         }
 
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/" +
-                dbName, username, password);
+        return DriverManager.getConnection( location+dbName, username, password);
     }
-
 }

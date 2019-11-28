@@ -60,9 +60,9 @@ public class Game {
     }
 
 
-    public String gameStats(Player p){
-        String s1 = p.getName()+" made "+p.shots()+(p.shots()==0?" shot.\n":" shots.\n");
-        String s2 = p.shots()==0? "" : p.getName()+"'s aiming accuracy was "+ winnerScore() + "%";
+    public String gameStats(){
+        String s1 = winner.getName()+" made "+winner.shots()+(winner.shots()==0?" shot.\n":" shots.\n");
+        String s2 = winner.shots()==0? "" : winner.getName()+"'s aiming accuracy was "+ winnerScore() + "%";
         return s1+s2;
     }
 
@@ -110,11 +110,6 @@ public class Game {
 
             if (currentGuess.equals("QUIT")){
 
-                System.out.println(activePlayer.getName()+", thank you for playing. Your stats are:\n"+
-                        gameStats(activePlayer));
-                infoMessage = activePlayer.getName()+", thank you for playing. Your stats are:\n"+
-                gameStats(activePlayer);
-
                 activePlayer.notStillIn();
                 switchPlayer();
 
@@ -128,7 +123,7 @@ public class Game {
                     winner = activePlayer;
 
                     System.out.println("Congratulations "+activePlayer.getName()+", you made it :)");
-                    infoMessage = "Congratulations "+activePlayer.getName()+", you made it :)\n"+gameStats(winner);
+                    infoMessage = "Congratulations "+activePlayer.getName()+", you made it :)\n"+gameStats();
 
                     gameOver=true;
                 } else {
@@ -155,8 +150,8 @@ public class Game {
             if (winner==player1 || winner==player2) {
                 System.out.println("And The winner is " + winner.getName());
                 System.out.println("Below is your game summary:");
-                System.out.println(gameStats(winner));
-                infoMessage = "The winner is "+winner.getName()+".\n"+gameStats(winner);
+                System.out.println(gameStats());
+                infoMessage = "The winner is "+winner.getName()+".\n"+gameStats();
                 try{
                     Connection con = GameDB.dbCon();
                     Statement stmt = GameDB.dbCon().createStatement();
@@ -172,7 +167,7 @@ public class Game {
                     insertWinnerData.setInt(2,winnerScore());
                     insertWinnerData.executeUpdate();
 
-                    infoMessage = "The winner is "+winner.getName()+".\n"+gameStats(winner)+"\n"+
+                    infoMessage = "The winner is "+winner.getName()+".\n"+gameStats()+"\n"+
                     "This score has been recorded.";
                 } catch(Exception ex) {
                     System.out.println("Something went wrong with the database!");

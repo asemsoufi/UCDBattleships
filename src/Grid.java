@@ -66,13 +66,13 @@ public class Grid {
                         double rand = Math.random();
                         if(rand >0.5){
                             // create and place Destroyer horizontally
-                            Ship dis = new Destroyer(getCellsHorizontal(2));
-                            ships.add(dis);
+                            Ship des = new Destroyer(getCellsHorizontal(2));
+                            ships.add(des);
 
                         } else{
                             // create and place Destroyer vertically
-                            Ship dis = new Destroyer(getCellsVertical(2));
-                            ships.add(dis);
+                            Ship des = new Destroyer(getCellsVertical(2));
+                            ships.add(des);
 
                         }
                     }
@@ -234,8 +234,8 @@ public class Grid {
                     case "CRU":
                         System.out.print(" CRU |");
                         break;
-                    case "DIS":
-                        System.out.print(" DIS |");
+                    case "DES":
+                        System.out.print(" DES |");
                         break;
                     case "SUB":
                         System.out.print(" SUB |");
