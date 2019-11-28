@@ -1,11 +1,13 @@
 import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -16,6 +18,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.util.Callback;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
 
 
 public class Main extends Application {
@@ -32,6 +38,11 @@ public class Main extends Application {
     private Stage originalStage;
     private Button btP1ShowOriginal;
     private Button btP2ShowOriginal;
+    private Stage scoreBoardStage;
+
+    //TABLE VIEW AND DATA
+    private ObservableList<ObservableList> data;
+    private TableView tableview;
 
     private void buildPlayerGrid(Grid g, GridPane gp, Stage s){
         int index = 0;
@@ -65,7 +76,7 @@ public class Main extends Application {
                 else {
                     b.setId(g.getCells().get(index));
                 }
-                //b.setText(newGame.getLookupGrid().getCells().get(index));
+
                 b.setPrefSize(70,70);
                 b.setOnAction((ActionEvent event) ->{
                     // make a guess
@@ -113,21 +124,62 @@ public class Main extends Application {
         }
     }
 
-    /*private ObservableList<String> fetchNames(Connection con) throws SQLException {
-        ObservableList<String> scoresBoard = FXCollections.observableArrayList();
+    //CONNECTION DATABASE
+    public void buildData(){
+        Connection c ;
+        data = FXCollections.observableArrayList();
+        try{
+            c = GameDB.dbCon();
+            //SQL FOR SELECTING ALL OF CUSTOMER
+            String SQL = "SELECT CONCAT(game_id,'') AS Game, CONCAT(player_name,'') AS Player, " +
+                    "CONCAT(aiming_accuracy, '%') AS Score, CONCAT(date,'') AS Date " +"FROM battleshipdb.scores " +
+                    "ORDER BY aiming_accuracy DESC";
+            //ResultSet
+            ResultSet rs = c.createStatement().executeQuery(SQL);
 
-        Statement st = con.createStatement();
-        ResultSet rs = st.executeQuery("select * from battleshipdb.scores");
-        while (rs.next()) {
-            scoresBoard.addAll();
+            /**********************************
+             * TABLE COLUMN ADDED DYNAMICALLY *
+             **********************************/
+            for(int i=0 ; i<rs.getMetaData().getColumnCount(); i++){
+                //We are using non property style for making dynamic table
+                final int j = i;
+                TableColumn col = new TableColumn(rs.getMetaData().getColumnName(i+1));
+                col.setCellValueFactory((Callback<TableColumn.CellDataFeatures<ObservableList, String>,
+                        ObservableValue<String>>) param -> new SimpleStringProperty(param.getValue().get(j).toString()));
+
+                tableview.getColumns().addAll(col);
+            }
+
+            /********************************
+             * Data added to ObservableList *
+             ********************************/
+            while(rs.next()){
+                //Iterate Row
+                ObservableList<String> row = FXCollections.observableArrayList();
+                for(int i=1 ; i<=rs.getMetaData().getColumnCount(); i++){
+                    //Iterate Column
+                    row.add(rs.getString(i));
+                }
+                data.add(row);
+            }
+
+            //FINALLY ADDED TO TableView
+            tableview.setItems(data);
+        }catch(Exception e){
+            e.printStackTrace();
+            System.out.println("Error on Building ScoreBoard Data");
         }
-        return scoresBoard;
-    }*/
+    }
+
 
     @Override
     public void start(Stage primaryStage) {
 
         newGame = new Game();
+
+        //TableView
+        tableview = new TableView();
+        buildData();
 
         // constructing primary stage
         Image welcomeImage = new Image("https://bit.ly/2CXAWUs");
@@ -138,10 +190,11 @@ public class Main extends Application {
         primaryStage.setResizable(false);
 
         Button btNewGame = new Button ( "New Game" ) ;
+        Button btShowScores = new Button ( "Show Scores Board" ) ;
         Button btExit = new Button ( "Exit" ) ;
 
 
-        VBox WelcomeRoot = new VBox (30 , selectedImage, btNewGame , btExit) ;
+        VBox WelcomeRoot = new VBox (20 , selectedImage, btNewGame , btShowScores, btExit) ;
         WelcomeRoot.setAlignment(Pos.CENTER) ;
 
         // setting-up a panel to get players' names
@@ -268,6 +321,8 @@ public class Main extends Application {
             }
         });
 
+        btShowScores.setOnAction((ActionEvent event) -> scoreBoardStage.show());
+
         btCancel.setOnAction((ActionEvent event) ->{
             primaryStage.setScene(welcomeScene);
             primaryStage.centerOnScreen();
@@ -321,6 +376,7 @@ public class Main extends Application {
             originalStage.show();
             originalStage.centerOnScreen();
         });
+
 
         Button gameOverExitBT = new Button("Exit Game");
         gameOverExitBT.setOnAction((ActionEvent event) -> primaryStage.close());
@@ -382,6 +438,15 @@ public class Main extends Application {
         originalStage.setScene(originalScene);
 
         buildPlayerGrid(newGame.getDeployedGrid(), originalGrid, originalStage);
+
+
+        //Score Board Scene
+        Scene scoreBoardScene = new Scene(tableview,400,500);
+        scoreBoardStage = new Stage();
+        scoreBoardStage.setScene(scoreBoardScene);
+        scoreBoardStage.setTitle("Battleships Score Board");
+        scoreBoardStage.getIcons().add(new Image("https://bit.ly/2pAUQkY"));
+        scoreBoardStage.setResizable(false);
 
         primaryStage.show();
     }

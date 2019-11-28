@@ -162,7 +162,7 @@ public class Game {
                     "PRIMARY KEY (game_id))";
                     stmt.executeUpdate(createScoresTable);
 
-                    PreparedStatement insertWinnerData = con.prepareStatement("INSERT INTO battleshipdb.scores (player_name, aimimg_accuracy) VALUES (?,?)");
+                    PreparedStatement insertWinnerData = con.prepareStatement("INSERT INTO battleshipdb.scores (player_name, aiming_accuracy) VALUES (?,?)");
                     insertWinnerData.setString(1, winner.getName());
                     insertWinnerData.setInt(2,winnerScore());
                     insertWinnerData.executeUpdate();
