@@ -6,12 +6,8 @@ public class GameDB {
 
     /**
      * Connection to the game's MySQL database
-     * @param location The address of the MySQL database
-     * @param dbName The database name
-     * @param userName The database user name used to access it
-     * @param password the database password used by this user to access it
      * @return The connection to the game's MySQL database
-     * @throws SQLException
+     * @throws SQLException in case connection with database failed
      */
     public static Connection dbCon() throws SQLException {
 

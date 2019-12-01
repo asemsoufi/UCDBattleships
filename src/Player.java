@@ -33,7 +33,7 @@ public class Player {
     }
 
     /**
-     * Sets the name of te player
+     * Sets the name of a player
      * @param name a string representing the player's name
      */
     public void setName(String name) {

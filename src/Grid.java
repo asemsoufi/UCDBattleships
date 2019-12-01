@@ -195,6 +195,7 @@ public class Grid {
     /**
      * Marks deployed ships on the map/grid, for testing purposes or at the end of the game,
      * but will be hidden from players until they had finished/quit playing
+     * @param ship the ship object to be marked
      */
 
     private void markShip(Ship ship){
