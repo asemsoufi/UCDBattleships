@@ -34,10 +34,15 @@ public class Player {
 
     /**
      * Sets the name of a player
-     * @param name a string representing the player's name
+     * @param name a string representing the player's name, it can't be empty or longer than 15 characters long
      */
     public void setName(String name) {
-        this.name = name;
+        if(name.trim().isEmpty() || name.trim().length()>15){
+            throw new IllegalArgumentException("Invalid player name! A name can't be empty or longer than 15 letters!");
+        }
+        else {
+            this.name = name;
+        }
     }
 
     /**
@@ -45,7 +50,11 @@ public class Player {
      * @param targetCells an ArrayList of all target cells randomly selected by the game for deployed ships
      */
     public void setTargetCells(ArrayList<String> targetCells){
-        myTargetCells.addAll(targetCells);
+        if(targetCells.size()!=30){
+            throw  new IllegalArgumentException("Invalid targetCells list!");
+        } else{
+            myTargetCells.addAll(targetCells);
+        }
     }
 
     /**
