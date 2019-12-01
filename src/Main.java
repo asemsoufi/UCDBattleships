@@ -44,6 +44,15 @@ public class Main extends Application {
     private ObservableList<ObservableList> data;
     private TableView tableview;
 
+
+    /**
+     * Builds a Player's grids board with 100 buttons and assigns cells reference values to the buttons' IDs
+     * it also sets buttons action to invoke the play method to check if a hit was made or not,
+     * or if player wishes to quit the game, and then switches turns or ends the game if applicable
+     * @param g the source list of cells to be assigned to buttons
+     * @param gp the grid pane which buttons will be assigned
+     * @param s the stage that will display the grids board
+     */
     private void buildPlayerGrid(Grid g, GridPane gp, Stage s){
         int index = 0;
         for(int i =0; i<g.getRows().length; i++){
@@ -124,7 +133,10 @@ public class Main extends Application {
         }
     }
 
-    //CONNECTION DATABASE
+    /**
+     * Establishes database connection and retrieves previous scores data from scores table
+     * and display it in a table view
+     */
     public void buildData(){
         Connection c ;
         data = FXCollections.observableArrayList();
@@ -171,7 +183,10 @@ public class Main extends Application {
         }
     }
 
-
+    /**
+     * Launches the game application
+     * @param primaryStage is the first stage to be displayed upon running the game application
+     */
     @Override
     public void start(Stage primaryStage) {
 
@@ -295,6 +310,7 @@ public class Main extends Application {
         p2VRoot.setAlignment(Pos.CENTER);
         p2VRoot.setStyle("-fx-background-color:#C4F1CE;");
         p2Scene = new Scene ( p2VRoot , 900 , 930) ;
+
 
         btStartGame.setOnAction((ActionEvent event) ->{
             if (p1NameInput.getText().trim().isEmpty() || p2NameInput.getText().trim().isEmpty() ||

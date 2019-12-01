@@ -32,7 +32,10 @@ public class Grid {
 
     /**
      * Deploys ships by randomly selecting from available cells and assigning them to the ships on the game menu
-     * This random process addresses cells locations and orientation
+     * <p>
+     * This random process addresses cells locations and orientation.
+     * At the end of the process all deployed ships will be marked on the original grids board to be displayed when appropriate
+     * Also assigned cells will be added to the target cells list (a total of 30 cells representing all ships)
      */
     public void deployShips(){
 
