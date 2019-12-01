@@ -309,4 +309,11 @@ public class Grid {
         return rows;
     }
 
+    /**
+     * Returns all ships that were deployed
+     * @return a list of all deployed ships, should return 14 ship objects
+     */
+    public ArrayList<Ship> getShips() {
+        return ships;
+    }
 }
