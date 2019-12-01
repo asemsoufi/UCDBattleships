@@ -11,6 +11,12 @@ public class Grid {
             {"Destroyer","4"},{"Submarine","5"}};
     private ArrayList<Ship> ships;
 
+    /**
+     * Constructs a grid object, basically a list of 100 strings representing 100 cells in a 10x10 grids board
+     * i.e. [A1, B1, ...., J10]
+     * It them makes these cells available for the random selection process of the cells that will be used to deploy ships
+     * Ships will then be added to a list to be referred to when needed
+     */
     public Grid(){
         cells = new ArrayList<>();
         for (int i = 0; i < rows.length; i++){
@@ -24,6 +30,10 @@ public class Grid {
         ships = new ArrayList<>();
     }
 
+    /**
+     * Deploys ships by randomly selecting from available cells and assigning them to the ships on the game menu
+     * This random process addresses cells locations and orientation
+     */
     public void deployShips(){
 
         //randomly generate and add ships to the grid
@@ -92,6 +102,11 @@ public class Grid {
         }
     }
 
+    /**
+     * This method will be called when the random process of selecting cells decides to assign cells horizontally
+     * @param numberOfCells is used to determine how many cells need to be assigned
+     * @return the line of cells selected horizontally to the calling method to use it in deploying current ship
+     */
     private ArrayList<String> getCellsHorizontal(int numberOfCells){
         // make sure a (valid & available) number of cells is passed to the method
         checkNumOfCells(numberOfCells);
@@ -127,6 +142,11 @@ public class Grid {
         return tempHorArray;
     }
 
+    /**
+     * This method will be called when the random process of selecting cells decides to assign cells vertically
+     * @param numberOfCells is used to determine how many cells need to be assigned
+     * @return the line of cells selected vertically to the calling method to use it in deploying current ship
+     */
     private ArrayList<String> getCellsVertical(int numberOfCells){
         // make sure a (valid & available) number of cells is passed to the method
         checkNumOfCells(numberOfCells);
@@ -169,8 +189,11 @@ public class Grid {
         }
     }
 
-    // this method marks deployed ships on the map/grid, for testing purposes or at the end of the game,
-    // but will be hidden from players until they had finished playing
+    /**
+     * Marks deployed ships on the map/grid, for testing purposes or at the end of the game,
+     * but will be hidden from players until they had finished/quit playing
+     */
+
     private void markShip(Ship ship){
         for(String shipCell:ship.getBody()){
             if (ship instanceof Battleship) {
@@ -185,31 +208,45 @@ public class Grid {
         }
     }
 
-    // mark a "HIT" string on the cell once a successful hit is made (terminal version)
+    /**
+     * Marks a "HIT" string on the cell once a successful hit is made (terminal version)
+     * @param cellNr is the reference of the cell that needs to be marked as a hit
+     */
     void markHit(int cellNr){
         if(cellNr>=0 && cellNr < cells.size()) {
             cells.set(cellNr, "HIT");
         }
     }
 
-    // mark a miss by printing " X " string on the cell once a miss is made (terminal version)
+    /**
+     * Marks a Miss by printing " X " string on the cell once a miss is made (terminal version)
+     * @param cellNr is the reference of the cell that needs to be marked as a miss
+     */
     void markMiss(int cellNr){
         if(cellNr>=0 && cellNr < cells.size()) {
             cells.set(cellNr, "X");
         }
     }
 
-    // returns all available cells on the grid
+    /**
+     * Returns all available cells on the grid
+     * @return a list of all 100 cell references
+     */
     public ArrayList<String> getCells() {
         return cells;
     }
 
-    // returns all deployed cells on the grid (all cells that are part of a ship and are targets)
+    /**
+     * Returns all deployed cells on the grid (all cells that are part of a ship and are possible targets)
+     * @return a list of all 30 target cells references
+     */
     public ArrayList<String> getTargetCells() {
         return targetCells;
     }
 
-    // plot grid to the terminal
+    /**
+     * Plots a grids board to the terminal (terminal version of the game)
+     */
     public void plot(){
         int counter = 0;
         System.out.println("     A     B     C     D     E     F     G     H     I     J");
@@ -252,10 +289,18 @@ public class Grid {
 
     }
 
+    /**
+     * Returnsa list of all columns headings, e.g. ["A", "B", ..., "J"]
+     * @return a lis t of 10 letters represented as strings
+     */
     public String[] getColumns() {
         return columns;
     }
 
+    /**
+     * Returnsa list of all rows headings, e.g. ["1", "2", ..., "10"]
+     * @return a lis t of 10 numbers represented as strings
+     */
     public String[] getRows() {
         return rows;
     }

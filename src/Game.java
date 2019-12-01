@@ -24,7 +24,7 @@ public class Game {
 
         activePlayer = player1;
 
-        infoMessage = "Please click a cell from the grid below to make a shot!";
+        infoMessage = "";
 
         lookupGrid = new Grid();
 
@@ -32,7 +32,7 @@ public class Game {
 
         deployedGrid.deployShips();
 
-        //System.out.println(deployedGrid.getTargetCells().toString());
+        //System.out.println(deployedGrid.getTargetCells().toString()); //used for testing
 
         // give each player his own copy of similar target cells
         player1.setTargetCells(deployedGrid.getTargetCells());
@@ -175,7 +175,7 @@ public class Game {
                 }
 
             } else if (!player1.isStillIn() && !player2.isStillIn()) {
-                infoMessage = "There is no winner!\n Both players quit the game early :(";
+                infoMessage = "There is no winner!\nBoth players quit the game early :(";
                 System.out.println(infoMessage);
             }
 
