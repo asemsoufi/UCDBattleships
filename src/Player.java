@@ -15,6 +15,7 @@ public class Player {
      * <p>
      * it initiates the Player's variables as: still playing, no hits or misses made yet,
      * gives him a grids board of his own to shoot at, and his copy of the target cells of deployed ships
+     * @param name pass the name of the player to constructor
     */
     public Player(String name){
         this.setName(name);
