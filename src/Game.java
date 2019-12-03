@@ -21,8 +21,8 @@ public class Game {
      */
     public Game(){
 
-        player1 = new Player();
-        player2 = new Player();
+        player1 = new Player("Default Player1");
+        player2 = new Player("Default Player2");
 
         activePlayer = player1;
 
@@ -156,6 +156,10 @@ public class Game {
      * @param currentGuess is a string representation of the player's selection/click
      */
     public void play(String currentGuess){
+
+        if(!lookupGrid.getCells().contains(currentGuess)){
+            throw new IllegalArgumentException("Invalid guess!");
+        }
 
         if (!gameOver && (player1.isStillIn() || player2.isStillIn())) {
 

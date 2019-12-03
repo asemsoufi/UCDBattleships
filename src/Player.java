@@ -16,7 +16,8 @@ public class Player {
      * it initiates the Player's variables as: still playing, no hits or misses made yet,
      * gives him a grids board of his own to shoot at, and his copy of the target cells of deployed ships
     */
-    public Player(){
+    public Player(String name){
+        this.setName(name);
         stillIn = true;
         hitCounter = 0;
         missCounter = 0;

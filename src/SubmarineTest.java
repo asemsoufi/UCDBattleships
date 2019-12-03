@@ -14,4 +14,5 @@ class SubmarineTest {
         Submarine submarine = new Submarine(subList);
         assertEquals("I'm a Submarine, and I'm located at [A1]", submarine.toString());
     }
+
 }

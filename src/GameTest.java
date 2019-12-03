@@ -1,5 +1,3 @@
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -7,6 +5,16 @@ import static org.junit.jupiter.api.Assertions.*;
 class GameTest {
 
     Game game = new Game();
+
+    @Test
+    void testPlay(){
+        try{
+            game.play("abc");
+            fail("You made an invalid input!");
+        } catch (IllegalArgumentException ex){
+            //do nothing
+        }
+    }
 
     @Test
     void testSetActivePlayer() {
@@ -27,6 +35,7 @@ class GameTest {
 
         assertEquals("Asem", game.getActivePlayer().getName());
     }
+
 
     @Test
     void testGetLookupGrid() {

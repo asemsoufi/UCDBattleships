@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {
 
-    private final Player p = new Player();
+    private final Player p = new Player("Test Player");
 
     Game g = new Game();
 
