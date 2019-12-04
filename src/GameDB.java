@@ -13,15 +13,15 @@ public class GameDB {
 
         try{
 
-            /*location = "jdbc:mysql://folding03.ucd.ie:3306/";
+            location = "jdbc:mysql://folding03.ucd.ie:3306/";
             dbName = "db17210556";
             username = "u17210556";
-            password = "COMP20300";*/
+            password = "COMP20300";
 
-            location = "jdbc:mysql://localhost:3306/";
+            /*location = "jdbc:mysql://localhost:3306/";
             dbName = "battleshipdb";
             username = "asem";
-            password = "0500821362";
+            password = "0500821362";*/
 
         } catch(Exception ex) {
             System.out.println("Something went wrong with the database!");

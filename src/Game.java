@@ -157,8 +157,8 @@ public class Game {
      */
     public void play(String currentGuess){
 
-        if(!lookupGrid.getCells().contains(currentGuess)){
-            throw new IllegalArgumentException("Invalid guess!");
+        if(!lookupGrid.getCells().contains(currentGuess) && !currentGuess.equals("QUIT")){
+            throw new IllegalArgumentException("Invalid input!");
         }
 
         if (!gameOver && (player1.isStillIn() || player2.isStillIn())) {
@@ -213,14 +213,14 @@ public class Game {
                 try{
                     Connection con = GameDB.dbCon();
                     Statement stmt = GameDB.dbCon().createStatement();
-                    String createScoresTable = "CREATE TABLE IF NOT EXISTS battleshipdb."+
+                    String createScoresTable = "CREATE TABLE IF NOT EXISTS db17210556."+
                             "scores(game_id INT(11) NOT NULL,player_name VARCHAR(45) NOT NULL,"+
                     "aiming_accuracy INT(11) NOT NULL, date"+
                             " DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,"+
                     "PRIMARY KEY (game_id))";
                     stmt.executeUpdate(createScoresTable);
 
-                    PreparedStatement insertWinnerData = con.prepareStatement("INSERT INTO battleshipdb.scores (player_name, aiming_accuracy) VALUES (?,?)");
+                    PreparedStatement insertWinnerData = con.prepareStatement("INSERT INTO db17210556.scores (player_name, aiming_accuracy) VALUES (?,?)");
                     insertWinnerData.setString(1, winner.getName());
                     insertWinnerData.setInt(2,winnerScore());
                     insertWinnerData.executeUpdate();

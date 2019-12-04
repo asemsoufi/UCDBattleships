@@ -144,7 +144,7 @@ public class Main extends Application {
             c = GameDB.dbCon();
             //SQL FOR SELECTING ALL OF CUSTOMER
             String SQL = "SELECT CONCAT(game_id,'') AS Game, CONCAT(player_name,'') AS Player, " +
-                    "CONCAT(aiming_accuracy, '%') AS Score, CONCAT(date,'') AS Date " +"FROM battleshipdb.scores " +
+                    "CONCAT(aiming_accuracy, '%') AS Score, CONCAT(date,'') AS Date " +"FROM db17210556.scores " +
                     "ORDER BY aiming_accuracy DESC";
             //ResultSet
             ResultSet rs = c.createStatement().executeQuery(SQL);
