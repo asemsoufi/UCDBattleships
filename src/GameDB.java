@@ -18,6 +18,7 @@ public class GameDB {
             username = "u17210556";
             password = "COMP20300";
 
+            //only for testing locally
             /*location = "jdbc:mysql://localhost:3306/";
             dbName = "battleshipdb";
             username = "asem";
